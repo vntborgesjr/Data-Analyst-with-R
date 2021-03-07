@@ -1,0 +1,309 @@
+---
+title: "01 - Custom ggplot2 themes"
+output: html_notebook
+---
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+
+```
+
+## **Introduction to the data**
+
+**1. Introduction to the data**
+
+Hello and welcome to this course on communicating with data in the tidyverse. My name is Timo Grossenbacher and I'll be your instructor.
+
+**2. This is me**
+
+Now, you can't see me, that's why I included a picture of me. I work as a data journalist, who is basically someone who tries to find stories in data sets. If you want to see concrete examples of my work, the R code I write, go to srfdata.github.io. You see, I use a lot of R code at work, and naturally, communicating results is an important part of it.
+
+**3. The last step in the Tidyverse process**
+
+And communicating is also part of the Tidyverse paradigm, which you have seen in previous courses covering the Tidyverse. Actually, it's the last step in the data science workflow. Sometimes, this step is a bit underestimated, but think about it: Your efforts might go completely unnoticed if you don't accurately and attractively communicate them. So we're not talking about exploratory visualization, we're talking about the communication of the most important points of your data science analysis.
+
+1 R for Data Science (http://r4ds.had.co.nz/communicate-intro.html)
+
+**4. What you are going to create**
+
+In this course, you are going to create the plot you see on the left side. Guess what? You are going to use ggplot2 for that, and only ggplot2. You already know this package from previous courses, but you probably didn't know how it can be tweaked and customized like this. Actually this is what the plot looked like before applying a custom look to it. The end result is not only easier to read and understand, its aesthetics are also different and – as I would argue – more appealing.
+
+**5. Reporting in the Tidyverse**
+
+Apart from that, you are also going to create a report where you show the findings of your analysis, and embed your graphics. This is another cool thing about R – it can be used to automatically create custom and professional-looking reports like this one. Here you are going to learn how to do this.
+
+**6. The data you are going to work with**
+
+Throughout this course, you are going to work with two different data sets from the International Labour Organization, the ILO. Both contain indicators that are concerned with the international labour market. The first one gives working hours per week since 1980 for different countries. Each row in this data set represents the amount of weekly working hours per year per country.
+
+**7. The data you are going to work with**
+
+The other data set you are going to use contains another indicator, the so-called hourly compensation. Basically, it's the amount of compensation - that is, wages but also other benefits employees get for each non-working hour. Also in this data set, each row represents the amount of hourly compensation in US dollars per year per country. So for example, in 1980 people in Australia were given 8.44 USD of compensation for each non-working hour.
+
+**8. The inner_join() verb / function**
+
+As a first exercise, you are going to combine both data sets into one – so each row shows both indicators for each country and each year. For this, you are going to use the inner_join verb, also called function, from dplyr. So with the inner_join function, rows from two data sets are matched based on a common key. Rows that are not contained in both data sets are lost in this operation, so only matching rows are retained. Look at the example here: Only rows one and two are retained, because their keys exist in both data frames.
+
+1 R for Data Science (http://r4ds.had.co.nz/relational-data.html#inner-join)
+
+**9. Let's do this!**
+
+Now, let's try this out and use the inner_join function to match both working hours and hourly compensation for each country and year.
+
+### **Join the two data sets together**
+
+In the video, you have learned that the `inner_join()` function of `dplyr` needs to be given a "key" on which two data frames are joined. Actually, multiple keys that need to match can be specified. In this first exercise, you are going to join two data sets by two keys. The data frames `ilo_hourly_compensation` and `ilo_working_hours` are already loaded for you and are available in your workspace.
+
+*This course touches on a lot of concepts you may have forgotten, so if you ever need a quick refresher, download the [tidyverse Cheat Sheet]{https://datacamp-community-prod.s3.amazonaws.com/e63a8f6b-2aa3-4006-89e0-badc294b179c} and keep it handy!*
+
+**Instructions**
+
+- Combine both ILO data frames `ilo_hourly_compensation` and `ilo_working_hours` using `the inner_join()` function of `dplyr`.
+- Join both data frames by the variables `"country"` and `"year"`.
+
+```{r}
+# Join both data frames
+ilo_data <- ilo_hourly_compensation %>%
+  ___(___, by = c(___, ___))
+
+# Count the resulting rows
+ilo_data  %>% 
+    count()
+
+# Examine ilo_data
+ilo_data
+```
+
+### **Change variable types**
+
+For displaying data in `ggplot2` graphics, it is often helpful to convert all the variables to the right data type. Usually, categorical variables like `country` in this example should be converted to factors before plotting them. You can do so using `as.factor()`. In your data set, two columns are still of type "character" – use `mutate()` to turn them into factors.
+
+**Instructions**
+
+- Turn the variable `year` into a factor. Before turning it into a factor, turn it into a number using `as.numeric()`: call the `as.numeric()` function within the `as.factor()` function call.
+- Turn the variable `country` into a factor.
+
+```{r}
+# Turn year and country into a factor
+ilo_data_corrected <- ilo_data %>%
+  mutate(year = as.___(as.___(year)),
+        country = ___)
+
+# See the results
+ilo_data_corrected
+```
+
+## **Filtering and plotting the data**
+
+**1. Filtering and plotting the data**
+
+Good job preprocessing the data. This task often takes a lot of time, but here you are lucky to work with data that is already in a clean and tidy format. In the remainder of this chapter, you are going to further explore the relationship between weekly working hours and hourly compensation, and the scatter plot is a good visual exploration form to do this.
+
+**2. Filter the data for European countries**
+
+Before visualizing this relationship, you will need to use dplyr's filter function to retain only European countries in the data set. That's a good set of countries where data for both 1996 and 2006 are available – the years you are going to compare in the second chapter of this course. You already know how to use the filter function, as shown in the code example here, where only Switzerland is retained.
+
+**3. The %in% operator**
+
+However, you might not know the so-called %in% operator, which often makes queries easier. While the equality operator in the previous example can filter for only one value at a time, the %in% operator can look up multiple values, like in this example. Here, we filter for countries in the vector on the right-hand side of the %in% operator, which is actually equivalent to using the OR operator with multiple equality operators. So in the following exercise, you are going to use this new %in% operator to only retain European countries in the data set.
+
+**4. The relationship between both indicators**
+
+Let's look at both labour market indicators. With ggplot2, we can quickly create a histogram of both the weekly working hours variable and the hourly compensation variable. This shows us the distribution of these values in 2006. However, in order to see the relationship between both variables, we need to use ggplot's point geometry.
+
+**5. The relationship between both indicators**
+
+And this is what you're going to do in the following exercises: You're going to create the scatter plot shown here, using ggplot's geom_point function.
+
+**6. Adding labels to the plot**
+
+Still, without proper titles and labels, the plot is pretty worthless. In a follow-up exercise, you are going to use ggplot's labs function to provide more information to the readers of your plot.
+
+**7. Some dplyr function repetition**
+
+You're also going to quickly repeat some dplyr functions like group_by and summarize, as shown in this example here, where we computed the median weekly working hours over all years, for every country. The result of this is a table which you are going to style in the later parts of this course, where you will compile a nice report of your findings.
+
+**8. Let's practice!**
+
+Now it's your turn.
+
+### **Filter the data for plotting**
+
+Use the `filter()` function of `dplyr` to remove non-European countries. A vector called `european_countries` has been created that contains all European countries which should remain in the data set. Here, the `%in%` operator introduced in the video might come in handy. Note that only a subset of European countries for which enough data exist is retained. For instance, Poland is missing.
+
+**Instructions**
+
+- Print `european_countries` to the console.
+- Apply the `filter()` function to only retain countries which also appear in the `european_countries` vector. Use the `%in%` operator to retain only values that appear in the right-hand side of the operator.
+
+```{r}
+# Examine the European countries vector
+___
+
+# Only retain European countries
+ilo_data <- ilo_data %>%
+  ___(___)
+```
+
+### **Some summary statistics**
+
+Use `dplyr`s `group_by()` and `summarize()` to compute summary statistics for both years.
+
+**Instructions**
+
+- Have a look at the structure of the `ilo_data` set with `str()`.
+- After this, group the data by year using the `group_by()` function.
+- Then, calculate the mean of both variables `hourly_compensation` and `working_hours` using the `summarize()` function.
+
+```{r}
+# Examine the structure of ilo_data
+___(ilo_data)
+
+# Group and summarize the data
+ilo_data %>%
+  group_by(___) %>%
+  ___(mean_hourly_compensation = ___(___),
+            mean_working_hours = ___(___))
+```
+
+### **A basic scatter plot**
+
+In this exercise, you will create a very basic scatter plot with `ggplot2`. This is mostly a repetition of stuff you've learnt in the prerequisites for this course, so it should be easy for you.
+
+**Instructions**
+
+- Filter the data for the year 2006. Save this filtered data set in a new variable called `plot_data` .
+- Use `plot_data` to create a scatter plot with `working_hours` on the x-axis and `hourly_compensation` on the y-axis.
+
+### **Add labels to the plot**
+
+As mentioned in the video, you're going to enhance the plot from the previous exercise by adding a title, a subtitle, and a caption to the plot as well as giving the axes meaningful names. You're going to use the `labs()` function to do this – try using `?labs` in the console to see the available options.
+
+**Instructions**
+
+- Use the `labs()` function to annotate your plot.
+- Specify the correct arguments in the `labs` function call.
+  - Use `?labs` to fire up the help function and see what arguments the `labs()` call takes.
+  - While it should be clear to what arguments most of the annotations should go, 
+  `"The more people work, the less compensation they seem to receive"` 
+  should be the title of the plot.
+
+```{r}
+# Create the plot
+ggplot(plot_data) +
+  geom_point(aes(x = working_hours, y = hourly_compensation)) +
+  # Add labels
+  ___(
+    ___ = "Working hours per week",
+    ___ = "Hourly compensation",
+    ___ = "The more people work, the less compensation they seem to receive",
+    ___ = "Working hours and hourly compensation in European countries, 2006",
+    ___ = "Data source: ILO, 2017"
+  )
+```
+
+## **Custom ggplot2 themes**
+
+**1. Custom ggplot2 themes**
+
+In the last set of exercises you created a very effective visualization that shows the relationship between two variables - the scatter plot. Now, let's make it more special. And this is where custom ggplot2 themes come in handy.
+
+**2. The advantages of a custom look**
+
+Take a look at both histograms shown here. The left one is made with the default ggplot2 look, while the right one has custom fonts and colors. I would argue there are a couple of advantages that come with such custom styles. First of all, you can use colors to better highlight certain aspects of your plot. Here the grid lines and the background are less dominant, while the bars of the histogram appear to be more present and thus important. Secondly, with a custom theme, you give your plot your own style and branding. Nowadays, everybody recognizes the default ggplot2 look, which is great, but might look cheap in the eyes of some experienced R users. With a custom look you communicate a sort of speciality or even exclusiveness, which has a subtle effect on how your plot and your results are perceived. So, let's have a look at how themes work.
+
+**3. The `theme()` function**
+
+The theme function is added to the plot object like geometries or other functions like labs. Within the theme function, you can alter components or elements of a theme, for instance all text elements, like in this example. In order to do that, you need to provide the appropriate argument with a function call from the element function family. In this case, element_text. Within this function call, you can specify a wide range of arguments that steer the look of this element. Here, we used the family and color argument to change all text elements in the plot to a gray serif font. Here, this affects the axes titles of the plot.
+
+**4. Default ggplot2 themes**
+
+ggplot2 also comes with a variety of default themes that you can just apply to your plot. They'll change a lot of components at the same time. In the classic theme for example, grid lines are removed and the axes are more pronounced, just to name a few.
+
+**5. Chaining `theme()` calls**
+
+Another cool thing about themes is that they can be combined and chained together. For instance, we could apply the classic theme, but then overwrite some of its components. Here, we just added another theme call to overwrite the style of the text elements in the plot.
+
+**6. Theme configuration options**
+
+Custom themes allow you to change the style of basically all elements of your plot. You can get an overview of all configuration options by calling the documentation of the theme function. Theme options are very fine-grained, as this excerpt from the documentation shows. For instance, you can change the appearance of only the x-axis, while leaving the y-axis as it is. The documentation also shows which function from the element function family to use for each configuration option.
+
+**7. The `element_*` function family**
+
+As said, theme configuration options are specified with functions from the element function family. There are four of these: element_text, _rect, and _line for text, rectangular and line elements, respectively, and there is element_blank. This last one is a bit special, as it is used to make plot elements disappear. One could specify element_blank for all text elements, for instance, which would remove the axes labels and titles in our histogram.
+
+**8. Let's try out themes!**
+
+Time to put this into practice. Let's try out some themes.
+
+### **Apply a default theme**
+
+As you've learnt in the videos, `ggplot2` comes with a set of predefined themes. Try out some of them!
+
+**Instructions**
+
+1. Assign your plot object into a variable called `ilo_plot` so you can save some typing later on.
+2. Try out the minimal theme on `ilo_plot`.
+3. Try out another theme on `ilo_plot`.
+
+```{r}
+# Save your current plot into a variable: ilo_plot
+___ <- ggplot(plot_data) +
+  geom_point(aes(x = working_hours, y = hourly_compensation)) +
+  labs(
+    x = "Working hours per week",
+    y = "Hourly compensation",
+    title = "The more people work, the less compensation they seem to receive",
+    subtitle = "Working hours and hourly compensation in European countries, 2006",
+    caption = "Data source: ILO, 2017"
+  )
+
+# View it
+ilo_plot
+```
+
+### **Change the appearance of titles**
+
+Besides applying defined `theme` presets, you can tweak your plot even more by altering different style attributes of it. Hint: You can reuse and overwrite the `ilo_plot` variable generated in the previous exercise – the current plot is already shown in the window on the right.
+
+**Instructions**
+
+- Using a custom `theme()` function call and `element_text()`:
+  - Change the font `family` of the text to `"Bookman"`.
+  - Additionally, change the `color` of the **title** and **caption** to `"gray25"` and `"gray30"`, respectively.
+  - Make the **subtitle** a little bigger by increasing the `size` to 12.
+
+```{r}
+ilo_plot <- ilo_plot +
+  theme_minimal() +
+  # Customize the "minimal" theme with another custom "theme" call
+  theme(
+    text = element_text(___ = ____),
+    title = element_text(___ = ____),
+    plot.caption = element_text(___ = ___),
+    plot.subtitle = element_text(___ = ____)
+  )
+
+# Render the plot object
+ilo_plot
+```
+
+### **Alter background color and add margins**
+
+Further customize the look of your plot with more arguments to the `theme` function call. You can continue working on your `ilo_plot` object created in the last exercise.
+
+**Instructions**
+
+- Change the overall background color of your plot to `"gray95"`.
+  - This time, another function than `element_text` is needed – one for rectangular plot elements. Rewatch the video to know which.
+- Look up the **correct sequence** of margin specifications in the documentation by typing `?theme`.
+- Using these specifications, add margins to the plot: 5mm top and bottom, 10mm to the left and the right.
+
+```{r}
+ilo_plot +
+  # "theme" calls can be stacked upon each other, so this is already the third call of "theme"
+  theme(
+    plot.background = ___(fill = ___),
+    plot.margin = unit(c(___, ___, ___, ___), units = "mm")
+  )
+```
+
