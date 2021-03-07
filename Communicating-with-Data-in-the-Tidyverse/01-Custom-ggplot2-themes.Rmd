@@ -4,7 +4,9 @@ output: html_notebook
 ---
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE}
-
+library(tidyverse)
+ilo_working_hours <- load("~/Vitor/DataCamp/Data-Analyst-with-R/datasets/ilo_working_hours.RData")
+ilo_hourly_compensation <- load("~/Vitor/DataCamp/Data-Analyst-with-R/datasets/ilo_hourly_compensation.RData")
 ```
 
 ## **Introduction to the data**
@@ -35,9 +37,17 @@ Apart from that, you are also going to create a report where you show the findin
 
 Throughout this course, you are going to work with two different data sets from the International Labour Organization, the ILO. Both contain indicators that are concerned with the international labour market. The first one gives working hours per week since 1980 for different countries. Each row in this data set represents the amount of weekly working hours per year per country.
 
+```{r}
+ilo_working_hours
+```
+
 **7. The data you are going to work with**
 
 The other data set you are going to use contains another indicator, the so-called hourly compensation. Basically, it's the amount of compensation - that is, wages but also other benefits employees get for each non-working hour. Also in this data set, each row represents the amount of hourly compensation in US dollars per year per country. So for example, in 1980 people in Australia were given 8.44 USD of compensation for each non-working hour.
+
+```{r}
+ilo_hourly_compensation
+```
 
 **8. The inner_join() verb / function**
 
@@ -63,7 +73,7 @@ In the video, you have learned that the `inner_join()` function of `dplyr` needs
 ```{r}
 # Join both data frames
 ilo_data <- ilo_hourly_compensation %>%
-  ___(___, by = c(___, ___))
+  inner_join(ilo_working_hours, by = c('country', 'year'))
 
 # Count the resulting rows
 ilo_data  %>% 
@@ -72,6 +82,8 @@ ilo_data  %>%
 # Examine ilo_data
 ilo_data
 ```
+
+The resulting data frame now consists of 612 rows.
 
 ### **Change variable types**
 
@@ -85,8 +97,8 @@ For displaying data in `ggplot2` graphics, it is often helpful to convert all th
 ```{r}
 # Turn year and country into a factor
 ilo_data_corrected <- ilo_data %>%
-  mutate(year = as.___(as.___(year)),
-        country = ___)
+  mutate(year = as.factor(as.numeric(year)),
+        country = as.factor(country))
 
 # See the results
 ilo_data_corrected
