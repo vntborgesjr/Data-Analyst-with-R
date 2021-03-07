@@ -239,8 +239,361 @@ summary {
 
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="visualizing-aspects-of-data-with-facets" class="section level2">
+<h2><strong>Visualizing aspects of data with facets</strong></h2>
+<p><strong>1. Visualizing aspects of data with facets</strong></p>
+<p>Welcome to the second chapter of this course. In this chapter, you are going to explore a less conventional form of visualization, the dot plot. But before that, we are going to quickly revise faceting – a nice ggplot-way of looking at different aspects of a data set.</p>
+<p><strong>2. The facet_grid() function</strong></p>
+<p>You may already know about the facet_wrap function from previous courses. Here, you’ll learn about the facet_grid function. Its advantage is that you can determine whether you want to order the facets horizontally or vertically. For that, the first argument given to the function is slightly different than for facet_wrap. It always takes a formula, which is denoted by the tilde in the middle of the formula. On the right-hand side you specify what variable will determine the columns of the plot, while the left-hand side variable will determine the rows of the plot. If you want to facet by one variable only, use the dot to indicate that there should be no faceting on this dimension.</p>
+<p><strong>3. The facet_grid() function</strong></p>
+<p>Actually, the facet_grid call with . ~ year gives identical results as facet_wrap with the same formula. Notice, however, that the dot needs to be removed from the formula in facet_wrap – we usually call this a one-sided formula, while facet_grid takes a two-sided formula.</p>
+<p><strong>4. A faceted scatter plot</strong></p>
+<p>In the last exercise, you generated this nice-looking scatter plot. It shows us the relationship in the year 2006. In the histograms for both years we saw that the weekly working hours have been decreasing overall. That means, in 1996 there were more countries with higher working hours than in 2006. But what happens to the relationship between working hours and hourly compensation? You’re going to explore this in the exercises, where you will facet this scatter plot, so there are two different facets for both the years.</p>
+<p><strong>5. Styling faceted plots</strong></p>
+<p>Another reason we are revisiting faceting here is that there are some specific theme options for faceted plots, like strip.background and strip.text. They can be used to style the small titles that are given to each facet, here displaying the respective year.</p>
+<p><strong>6. Defining your own theme function</strong></p>
+<p>Another helpful thing you are going to try out in the exercises is defining your own theme function. Basically, a function definition works like this: You define a new variable, the name of the function. This name, in this case theme_green, is followed by the assignment operator and the function keyword, which is then followed by parentheses and an opening curly bracket. After that, the so-called function body defines what’s happening once this function is executed. Here, you just call a normal ggplot2 theme function with your own custom theme options. You then close the function body with a curly bracket. The cool thing about a custom theme function is that you can then apply it to any plot object you like. If we apply our new theme_green-function to the histogram, it quickly changes its appearance. Well.. this plot certainly doesn’t win a beauty contest, but you get the idea. You’re going to try this out in the exercises.</p>
+<p><strong>7. Let’s practice!</strong></p>
+<p>Let’s do it!</p>
+<div id="prepare-the-data-set-for-the-faceted-plot" class="section level3">
+<h3><strong>Prepare the data set for the faceted plot</strong></h3>
+<p>You’re now going to prepare your data set for producing the faceted scatter plot in the next exercise, as mentioned in the video. For this, the data set needs to contain only the years 1996 and 2006, because your plot will only have two facets. <code>ilo_data</code> has been pre-loaded for you.</p>
+<p>Instructions 100 XP Use <code>filter()</code> to only retain the years 1996 and 2006 in the data set. Use the OR operator in your <code>filter()</code> function call.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBGaWx0ZXIgaWxvX2RhdGEgdG8gcmV0YWluIHRoZSB5ZWFycyAxOTk2IGFuZCAyMDA2XG5pbG9fZGF0YSA8LSBpbG9fZGF0YSAlPiVcbiAgX19fXG5gYGAifQ== -->
+<pre class="r"><code># Filter ilo_data to retain the years 1996 and 2006
+ilo_data &lt;- ilo_data %&gt;%
+  ___</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="add-facets-to-the-plot" class="section level3">
+<h3><strong>Add facets to the plot</strong></h3>
+<p>Here, you’ll leverage <code>facet_grid()</code> to add horizontal facets for 1996 and 2006 each, as detailed in the video.</p>
+<p>When using <code>facet_grid()</code>, it is good practice to specify the facet formula with a named argument: <code>facets = ...</code>. This helps to avoid confusion since the <code>facet_grid()</code> function takes many other arguments.</p>
+<p><strong>Instructions</strong></p>
+<ul>
+<li>Use <code>facet_grid()</code> with the right formula to generate two separate scatter plots that are arranged horizontally.</li>
+<li>The left plot should show the data for the year 1996 while the year 2006 should be shown on the right side.</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBBZ2FpbiwgeW91IHNhdmUgdGhlIHBsb3Qgb2JqZWN0IGludG8gYSB2YXJpYWJsZSBzbyB5b3UgY2FuIHNhdmUgdHlwaW5nIGxhdGVyIG9uXG5pbG9fcGxvdCA8LSBnZ3Bsb3QoaWxvX2RhdGEsIGFlcyh4ID0gd29ya2luZ19ob3VycywgeSA9IGhvdXJseV9jb21wZW5zYXRpb24pKSArXG4gIGdlb21fcG9pbnQoKSArXG4gICBsYWJzKFxuICAgIHggPSBcIldvcmtpbmcgaG91cnMgcGVyIHdlZWtcIixcbiAgICB5ID0gXCJIb3VybHkgY29tcGVuc2F0aW9uXCIsXG4gICAgdGl0bGUgPSBcIlRoZSBtb3JlIHBlb3BsZSB3b3JrLCB0aGUgbGVzcyBjb21wZW5zYXRpb24gdGhleSBzZWVtIHRvIHJlY2VpdmVcIixcbiAgICBzdWJ0aXRsZSA9IFwiV29ya2luZyBob3VycyBhbmQgaG91cmx5IGNvbXBlbnNhdGlvbiBpbiBFdXJvcGVhbiBjb3VudHJpZXMsIDIwMDZcIixcbiAgICBjYXB0aW9uID0gXCJEYXRhIHNvdXJjZTogSUxPLCAyMDE3XCJcbiAgKSArXG4gICMgQWRkIGZhY2V0cyBoZXJlXG4gIF9fXyhfX18pXG4gXG5pbG9fcGxvdFxuYGBgIn0= -->
+<pre class="r"><code># Again, you save the plot object into a variable so you can save typing later on
+ilo_plot &lt;- ggplot(ilo_data, aes(x = working_hours, y = hourly_compensation)) +
+  geom_point() +
+   labs(
+    x = &quot;Working hours per week&quot;,
+    y = &quot;Hourly compensation&quot;,
+    title = &quot;The more people work, the less compensation they seem to receive&quot;,
+    subtitle = &quot;Working hours and hourly compensation in European countries, 2006&quot;,
+    caption = &quot;Data source: ILO, 2017&quot;
+  ) +
+  # Add facets here
+  ___(___)
+ 
+ilo_plot</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="define-your-own-theme-function" class="section level3">
+<h3><strong>Define your own theme function</strong></h3>
+<p>In the video you saw how a lot of typing can be saved by replacing code chunks with function calls. You saw how a function is usually defined, now you will apply this knowledge in order to make your previous two <code>theme()</code> calls reusable.</p>
+<p><strong>Instructions</strong></p>
+<ul>
+<li>Using your new knowledge about function definitions, create a function named <code>theme_ilo()</code> that encapsulates your theme settings.</li>
+<li>The function body should contain both <code>theme()</code> calls that you would normally apply directly to a plot object: <code>theme_minimal() +</code> your customized <code>theme()</code> function.</li>
+<li>Copy what you did before into this <code>theme_ilo()</code> function, using the <code>theme()</code> settings provided in the sample code.</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBGb3IgYSBzdGFydGVyLCBsZXQncyBsb29rIGF0IHdoYXQgeW91IGRpZCBiZWZvcmU6IGFkZGluZyB2YXJpb3VzIHRoZW1lIGNhbGxzIHRvIHlvdXIgcGxvdCBvYmplY3Rcbmlsb19wbG90ICtcbiAgdGhlbWVfbWluaW1hbCgpICtcbiAgdGhlbWUoXG4gICAgdGV4dCA9IGVsZW1lbnRfdGV4dChmYW1pbHkgPSBcIkJvb2ttYW5cIiwgY29sb3IgPSBcImdyYXkyNVwiKSxcbiAgICBwbG90LnN1YnRpdGxlID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMiksXG4gICAgcGxvdC5jYXB0aW9uID0gZWxlbWVudF90ZXh0KGNvbG9yID0gXCJncmF5MzBcIiksXG4gICAgcGxvdC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGZpbGwgPSBcImdyYXk5NVwiKSxcbiAgICBwbG90Lm1hcmdpbiA9IHVuaXQoYyg1LCAxMCwgNSwgMTApLCB1bml0cyA9IFwibW1cIilcbiAgKVxuICAgICAgXG4jIERlZmluZSB5b3VyIG93biB0aGVtZSBmdW5jdGlvbiBiZWxvd1xudGhlbWVfaWxvIDwtIGZ1bmN0aW9uKCkge1xuICAgIF9fXygpICtcbiAgICBfX18oXG4gICAgICAgIF9fX1xuICAgIClcbn1cbmBgYCJ9 -->
+<pre class="r"><code># For a starter, let&#39;s look at what you did before: adding various theme calls to your plot object
+ilo_plot +
+  theme_minimal() +
+  theme(
+    text = element_text(family = &quot;Bookman&quot;, color = &quot;gray25&quot;),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(color = &quot;gray30&quot;),
+    plot.background = element_rect(fill = &quot;gray95&quot;),
+    plot.margin = unit(c(5, 10, 5, 10), units = &quot;mm&quot;)
+  )
+      
+# Define your own theme function below
+theme_ilo &lt;- function() {
+    ___() +
+    ___(
+        ___
+    )
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="apply-the-new-theme-function-to-the-plot" class="section level3">
+<h3><strong>Apply the new theme function to the plot</strong></h3>
+<p>Once you have created your own <code>theme_ilo()</code> function, it is time to apply it to a plot object. In the video you saw that <code>theme()</code> calls can be chained. You’re going to make use of this and add another <code>theme()</code> call to adjust some peculiarities of the faceted plot.</p>
+<p><strong>Instructions</strong></p>
+<ul>
+<li>From now on, you can just add <code>theme_ilo()</code> to any plot object you wish. Try it out! Overwrite the <code>ilo_plot</code> variable so <code>theme_ilo()</code> is applied permanently.</li>
+<li>Combine your custom theme function with even further <code>theme()</code> calls to flexibly adjust settings for advanced plots.
+<ul>
+<li>In order to do that, add another <code>theme()</code> call after the <code>theme_ilo()</code> call.</li>
+<li>Change the background fill of the facet labels to <code>&quot;gray60&quot;</code> and their color to <code>&quot;gray95&quot;</code>, using the <code>strip.background</code> argument.</li>
+<li>Change the color of the facet labels to <code>&quot;white&quot;</code>.</li>
+</ul></li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBBcHBseSB5b3VyIHRoZW1lIGZ1bmN0aW9uIChkb250J3QgZm9yZ2V0IHRvIGNhbGwgaXQgd2l0aCBwYXJlbnRoZXNlcyEpXG5pbG9fcGxvdCA8LSBpbG9fcGxvdCArXG4gIF9fX1xuXG4jIEV4YW1pbmUgaWxvX3Bsb3Rcbmlsb19wbG90XG5cbmlsb19wbG90ICtcbiAgIyBBZGQgYW5vdGhlciB0aGVtZSBjYWxsXG4gIF9fXyhcbiAgICAjIENoYW5nZSB0aGUgYmFja2dyb3VuZCBmaWxsIGFuZCBjb2xvclxuICAgIHN0cmlwLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoX19fLCBfX18pLFxuICAgICMgQ2hhbmdlIHRoZSBjb2xvciBvZiB0aGUgdGV4dFxuICAgIHN0cmlwLnRleHQgPSBlbGVtZW50X3RleHQoX19fKVxuICApXG5gYGAifQ== -->
+<pre class="r"><code># Apply your theme function (dont&#39;t forget to call it with parentheses!)
+ilo_plot &lt;- ilo_plot +
+  ___
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiMDIgLSBDcmVhdGluZyBhIGN1c3RvbSBhbmQgdW5pcXVlIHZpc3VhbGl6YXRpb24iCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCg==</div>
+# Examine ilo_plot
+ilo_plot
+
+ilo_plot +
+  # Add another theme call
+  ___(
+    # Change the background fill and color
+    strip.background = element_rect(___, ___),
+    # Change the color of the text
+    strip.text = element_text(___)
+  )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="a-custom-plot-to-emphasize-change" class="section level2">
+<h2><strong>A custom plot to emphasize change</strong></h2>
+<p><strong>1. A custom plot to emphasize change</strong></p>
+<p>Great job! From the plot you just produced we see that there was a negative correlation between working hours and hourly compensation also in 1996.</p>
+<p><strong>2. &lt;&lt;<New Slide>&gt;&gt;</strong></p>
+<p>However, some countries seem to have shifted their position. In 2006, there are more countries with higher hourly compensation, and also more with less weekly working hours. From this scatter plot, we can’t really tell which countries have made the biggest shift.</p>
+<p><strong>3. The dot plot</strong></p>
+<p>A good visualization form for showing change over time in one variable is the so-called dot plot. It is often used in data journalism for comparing the change of different entities like countries. Here’s an example from the New York Times, which shows what share of the overall national income the richest 1 percent have got. For example, around 1980, the richest 1 percent in the US had 11 percent of the national income – nowadays they’ve got 20 percent. The dot plot not only shows which country made the biggest step into any direction, it also shows us the values for both years that are compared. Thus, it is well suited to showing change over time while also presenting some sort of rank between items.</p>
+<p>1 New York Times (<a href="https://www.nytimes.com/2017/11/17/upshot/income-inequality-united-states.html" class="uri">https://www.nytimes.com/2017/11/17/upshot/income-inequality-united-states.html</a>){{0}}</p>
+<p><strong>4. Dot plots with ggplot2</strong></p>
+<p>Dot plots can be easily created in ggplot2. Now, while there is a specific geometry called geom_dotplot, it’s actually not what we are looking for. geom_dotplot basically produces a histogram with dots, as you can see in the code example here. The y axis now shows the share of countries with specific working hours, while the dots represent the actual countries in each category. The terminology in data vis is not sacred, so different things can have same names. For the dot plot you are going to produce in the next exercises, you will use ggplot2’s geom_path function.</p>
+<p><strong>5. The geom_path() function</strong></p>
+<p>geom_path is useful for creating plots based on fundamental geometric elements, such as lines. If you look at the help for geom_path, it tells you that it connects the observations in a data set in the order in which they appear. Let’s have a look at your current data set. In the first exercise of this chapter, you filtered it to only contain the years 1996 and 2006. If you order that data frame by country, you see that there are two rows for each country, representing both years. 1996 always comes before 2006, so geom_path will draw a path from 1996 to 2006, as these years appear in the data set.</p>
+<p><strong>6. Dot plots with <code>ggplot2</code>: the <code>geom_path()</code> function</strong></p>
+<p>geom_path requires the x- and y-aesthetic to be set. Both can be numeric variables, so geom_path will draw a path in the two-dimensional plane. However, one of both can also be a factor variable. If you specify a numeric variable for the x-aesthetic, and a factor for the y-aesthetic, geom_path will draw a single path for each value in the y-aesthetic, that is, for each value of the factor variable. Also, you can add an arrow to each path, using the arrow argument outside the aesthetics function. The arrow argument in turn takes an arrow function call, where you can specify the type of the arrow head and other settings. The arrow will be placed at the last section of your path and thus point into the same direction the path was drawn.</p>
+<p><strong>7. Let’s try out geom_path!</strong></p>
+<p>This may sound a bit theoretical, so let’s look at a concrete example and build your first iteration of the dot plot.</p>
+<div id="a-basic-dot-plot" class="section level3">
+<h3><strong>A basic dot plot</strong></h3>
+<p>As shown in the video, use only <code>geom_path()</code> to create the basic structure of the dot plot.</p>
+<p><strong>Instructions</strong></p>
+<ul>
+<li>Create a new ggplot object which takes <code>ilo_data</code> as data set.</li>
+<li>Add a <code>geom_path()</code> geometry where the weekly working hours are mapped to the x-axis and countries to the y-axis.</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDcmVhdGUgdGhlIGRvdCBwbG90XG5fX19cbmBgYCJ9 -->
+<pre class="r"><code># Create the dot plot
+___</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="add-arrows-to-the-lines-in-the-plot" class="section level3">
+<h3><strong>Add arrows to the lines in the plot</strong></h3>
+<p>Instead of labeling years, use the <code>arrow</code> argument of the <code>geom_path()</code> call to show the direction of change. The arrows will point from 1996 to 2006, because that’s how the data set is ordered. The <code>arrow()</code> function takes two arguments: The first is <code>length</code>, which can be specified with a <code>unit()</code> call, which you might remember from previous exercises. The second is <code>type</code> which defines how the arrow head will look.</p>
+<p><strong>Instructions</strong></p>
+<ul>
+<li>Use the <code>arrow</code> argument and an <code>arrow()</code> function call to add arrows to each line.</li>
+<li>For the arrows, specify a <code>length</code> of <code>1.5</code> <code>&quot;mm&quot;</code> (with a unit() call) and a <code>type</code> of <code>&quot;closed&quot;</code>.</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2dwbG90KGlsb19kYXRhKSArXG4gIGdlb21fcGF0aChhZXMoeCA9IHdvcmtpbmdfaG91cnMsIHkgPSBjb3VudHJ5KSxcbiAgIyBBZGQgYW4gYXJyb3cgdG8gZWFjaCBwYXRoXG4gIGFycm93ID0gX19fKF9fXyA9IF9fXyhfX18sIFwiX19fXCIpLCBfX18gPSBcIl9fX1wiKSlcbmBgYCJ9 -->
+<pre class="r"><code>ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+  # Add an arrow to each path
+  arrow = ___(___ = ___(___, &quot;___&quot;), ___ = &quot;___&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="add-some-labels-to-each-country" class="section level3">
+<h3><strong>Add some labels to each country</strong></h3>
+<p>A nice thing that can be added to plots are annotations or labels, so readers see the value of each data point displayed in the plot panel. This often makes axes obsolete, an advantage you’re going to use in the last exercise of this chapter. These labels are usually added with <code>geom_text()</code> or <code>geom_label()</code>. The latter adds a background to each label, which is not needed here.</p>
+<p><strong>Instructions</strong></p>
+<ul>
+<li>Label both points on the line with their respective working hours value. Use the <code>geom_text()</code> function for this, with the x- and y-aesthetic identical to the one in the <code>geom_path()</code> call.</li>
+<li>Specify the <code>working_hours</code> variable for the <code>label</code> argument. Round <code>working_hours</code> to one digit after the decimal point.</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2dwbG90KGlsb19kYXRhKSArXG4gIGdlb21fcGF0aChhZXMoeCA9IHdvcmtpbmdfaG91cnMsIHkgPSBjb3VudHJ5KSxcbiAgICAgICAgICAgIGFycm93ID0gYXJyb3cobGVuZ3RoID0gdW5pdCgxLjUsIFwibW1cIiksIHR5cGUgPSBcImNsb3NlZFwiKSkgK1xuICAjIEFkZCBhIGdlb21fdGV4dCgpIGdlb21ldHJ5XG4gIF9fXyhcbiAgICAgICAgICBhZXMoeCA9IF9fXyxcbiAgICAgICAgICAgICAgeSA9IF9fXyxcbiAgICAgICAgICAgICAgbGFiZWwgPSByb3VuZChfX18sIDEpKVxuICAgICAgICApXG5gYGAifQ== -->
+<pre class="r"><code>ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+            arrow = arrow(length = unit(1.5, &quot;mm&quot;), type = &quot;closed&quot;)) +
+  # Add a geom_text() geometry
+  ___(
+          aes(x = ___,
+              y = ___,
+              label = round(___, 1))
+        )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="polishing-the-dot-plot" class="section level2">
+<h2><strong>Polishing the dot plot</strong></h2>
+<p><strong>1. Polishing the dot plot</strong></p>
+<p>Great work. You’ve explored a new type of visualization in ggplot2. Actually, building the plot is quite easy, you only used the geom_path geometry for the lines with arrows, and the geom_text geometry to add labels.</p>
+<p><strong>2. &lt;&lt;<New Slide>&gt;&gt;</strong></p>
+<p>But still, by just looking at the plot you can probably tell that it’s far from perfect. Obviously, the labels should be better placed – now, they overlap with the lines. Also, it’s hard to compare countries with each other because they are ordered alphabetically at the moment. It’s not straightforward to tell which country still has the highest weekly working hours. The solution lies in factor levels.</p>
+<p><strong>3. Factor levels</strong></p>
+<p>Factors are used to describe categorical variables with a fixed and known set of <strong>levels</strong>. The order of these levels usually determines the order of appearance in ggplot2 graphics. If you look at the country variable by typing ilo_data$country in the R console, you get its values but also its levels, listed in the actual order.</p>
+<p><strong>4. Reordering factors with the forcats package</strong></p>
+<p>Wrangling factors and factor levels sometimes can be a bit tedious. But there’s a special package for making this easier, called forcats. It is part of the Tidyverse but needs to be loaded explicitly with a library call. It has a couple of useful functions, here’s some of them.</p>
+<p>1 Learn more at tidyverse.org (<a href="http://forcats.tidyverse.org/" class="uri">http://forcats.tidyverse.org/</a>)</p>
+<p><strong>5. The fct_reorder function</strong></p>
+<p>With the fct_reorder function, we can reorder factors in a data-driven way, based on the ranks of another variable in the data set. Let’s have a look at our current data set again. As you know, there are two rows per country, one for each year. If we want to reorder the countries based on the value of working hours we can decide whether to take the value for 1996 or the value for 2006 for reordering. With the fct_reorder function, though, we can also specify a custom summary function as the last argument. This function is applied to all values of the same factor level, that is, of the same country. If we specify the mean function as the third argument to the fct_reorder function, for instance, the mean weekly working hours of both years is computed for each country, and then the countries are reordered according to this mean value. As you can see, the levels are now different, the list starts with the Netherlands, which has the lowest mean weekly working hours.</p>
+<p><strong>6. The fct_reorder function</strong></p>
+<p>Let’s have a detailed look at this again. In the fct_reorder function, we first need to specify the factor variable to reorder, then another variable whose ranking dictates the order of levels, and then a summary function. This summary function is then applied to each value for every factor level. These values are given as vector arguments to the summary function, so for Austria, the mean of 31.99 and 31.82 is calculated, and so forth.</p>
+<p><strong>7. Nudging labels with hjust and vjust</strong></p>
+<p>One problem remains: The working hour labels for both years still overlap with the arrows. In order to solve this we can make use of the hjust and vjust aesthetics for the geom_text geometry. If you want to nudge labels horizontally, you use the hjust aesthetic, which takes values from 0 to 1, but values outside this range are also possible. For our plot, I found 1.4 and -0.4 to be good values. Since hjust is an aesthetic, its value can be data-driven. Here, we use different values for the years 1996 and 2006, respectively. The ifelse function is perfect for that - if the year is 2006, use 1.4 as value, if not, use -0.4.</p>
+<p><strong>8. Let’s practice!</strong></p>
+<p>That was a lot. Once you try it out yourself it will be easier for you to grasp!</p>
+<div id="reordering-elements-in-the-plot" class="section level3">
+<h3><strong>Reordering elements in the plot</strong></h3>
+<p>As shown in the video, use <code>mutate()</code> and <code>fct_reorder()</code> to change the factor level ordering of a variable.</p>
+<p><strong>Instructions</strong></p>
+<ul>
+<li>Use <code>fct_reorder()</code> in the <code>forcats</code> package to reorder the <code>country</code> factor variable by weekly working hours in the year 2006.
+<ul>
+<li>To do that, specify the correct summary function as the third argument of <code>fct_reorder</code>. It should arrange the country factor levels by the last element in the <code>working_hours</code> variable.</li>
+<li>In order to do the above, you first need to <code>arrange()</code> the data set by year – so 1996 is always first in each country group and 2006 is always last.</li>
+</ul></li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShmb3JjYXRzKVxuXG4jIFJlb3JkZXIgY291bnRyeSBmYWN0b3IgbGV2ZWxzXG5pbG9fZGF0YSA8LSBpbG9fZGF0YSAlPiVcbiAgIyBBcnJhbmdlIGRhdGEgZnJhbWVcbiAgYXJyYW5nZShfX18pICU+JVxuICAjIFJlb3JkZXIgY291bnRyaWVzIGJ5IHdvcmtpbmcgaG91cnMgaW4gMjAwNlxuICBtdXRhdGUoY291bnRyeSA9IGZjdF9yZW9yZGVyKF9fXyxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBfX18sXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgX19fKSlcblxuIyBQbG90IGFnYWluXG5nZ3Bsb3QoaWxvX2RhdGEpICtcbiAgZ2VvbV9wYXRoKGFlcyh4ID0gd29ya2luZ19ob3VycywgeSA9IGNvdW50cnkpLFxuICAgICAgICAgICAgYXJyb3cgPSBhcnJvdyhsZW5ndGggPSB1bml0KDEuNSwgXCJtbVwiKSwgdHlwZSA9IFwiY2xvc2VkXCIpKSArXG4gICAgZ2VvbV90ZXh0KFxuICAgICAgICAgIGFlcyh4ID0gd29ya2luZ19ob3VycyxcbiAgICAgICAgICAgICAgeSA9IGNvdW50cnksXG4gICAgICAgICAgICAgIGxhYmVsID0gcm91bmQod29ya2luZ19ob3VycywgMSkpXG4gICAgICAgICAgKVxuYGBgIn0= -->
+<pre class="r"><code>library(forcats)
+
+# Reorder country factor levels
+ilo_data &lt;- ilo_data %&gt;%
+  # Arrange data frame
+  arrange(___) %&gt;%
+  # Reorder countries by working hours in 2006
+  mutate(country = fct_reorder(___,
+                               ___,
+                               ___))
+
+# Plot again
+ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+            arrow = arrow(length = unit(1.5, &quot;mm&quot;), type = &quot;closed&quot;)) +
+    geom_text(
+          aes(x = working_hours,
+              y = country,
+              label = round(working_hours, 1))
+          )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="correct-ugly-label-positions" class="section level3">
+<h3><strong>Correct ugly label positions</strong></h3>
+<p>The labels still kind of overlap with the lines in the dot plot. Use a conditional <code>hjust</code> aesthetic in order to better place them, and change their appearance.</p>
+<p><strong>Instructions</strong></p>
+<ul>
+<li>Give the <code>hjust</code> aesthetic in the <code>geom_text()</code> function call a value of <code>1.4</code>, if it concerns the label for the year <code>&quot;2006&quot;</code>, and <code>-0.4</code> if not. Use the <code>ifelse()</code> function for this.</li>
+<li>Change font size, family and color to <code>3</code>, <code>&quot;Bookman&quot;</code> and <code>&quot;gray25&quot;</code> respectively, also in the <code>geom_text()</code> call, but outside of the <code>aes()</code> function since these values are not data-driven.</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBTYXZlIHBsb3QgaW50byBhbiBvYmplY3QgZm9yIHJldXNlXG5pbG9fZG90X3Bsb3QgPC0gZ2dwbG90KGlsb19kYXRhKSArXG4gIGdlb21fcGF0aChhZXMoeCA9IHdvcmtpbmdfaG91cnMsIHkgPSBjb3VudHJ5KSxcbiAgICAgICAgICAgIGFycm93ID0gYXJyb3cobGVuZ3RoID0gdW5pdCgxLjUsIFwibW1cIiksIHR5cGUgPSBcImNsb3NlZFwiKSkgK1xuICAgICMgU3BlY2lmeSB0aGUgaGp1c3QgYWVzdGhldGljIHdpdGggYSBjb25kaXRpb25hbCB2YWx1ZVxuICAgIGdlb21fdGV4dChcbiAgICAgICAgICBhZXMoeCA9IHdvcmtpbmdfaG91cnMsXG4gICAgICAgICAgICAgIHkgPSBjb3VudHJ5LFxuICAgICAgICAgICAgICBsYWJlbCA9IHJvdW5kKHdvcmtpbmdfaG91cnMsIDEpLFxuICAgICAgICAgICAgICBoanVzdCA9IGlmZWxzZShfX18pXG4gICAgICAgICAgICApLFxuICAgICAgICAgICMgQ2hhbmdlIHRoZSBhcHBlYXJhbmNlIG9mIHRoZSB0ZXh0XG4gICAgICAgICAgX19fID0gX19fLFxuICAgICAgICAgIF9fXyA9IFwiX19fXCIsXG4gICAgICAgICAgX19fID0gXCJfX19cIlxuICAgICAgICAgIClcblxuaWxvX2RvdF9wbG90XG5gYGAifQ== -->
+<pre class="r"><code># Save plot into an object for reuse
+ilo_dot_plot &lt;- ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+            arrow = arrow(length = unit(1.5, &quot;mm&quot;), type = &quot;closed&quot;)) +
+    # Specify the hjust aesthetic with a conditional value
+    geom_text(
+          aes(x = working_hours,
+              y = country,
+              label = round(working_hours, 1),
+              hjust = ifelse(___)
+            ),
+          # Change the appearance of the text
+          ___ = ___,
+          ___ = &quot;___&quot;,
+          ___ = &quot;___&quot;
+          )
+
+ilo_dot_plot</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="finalizing-the-plot-for-different-audiences-and-devices" class="section level2">
+<h2><strong>Finalizing the plot for different audiences and devices</strong></h2>
+<p><strong>1. Finalizing the plot for different audiences and devices</strong></p>
+<p>You’re almost done! In this last section of the second chapter, you’re going to finalize your dot plot, apply your custom theme and make it fit for different audiences and devices.</p>
+<p><strong>2. &lt;&lt;<New Slide>&gt;&gt;</strong></p>
+<p>Let’s have a look at the current state of your plot. The labels are now shifted so they don’t overlap with the arrows anymore, and they already have the right font family, color and size. They will look great together with your custom theme you are going to apply shortly. However, you’ve introduced another problem. The labels now overlap with the plot panel borders on the left and right side of the panel. In the following exercise, you are going to change the viewport in order to solve this problem.</p>
+<p><strong>3. coord_cartesian vs. xlim / ylim</strong></p>
+<p>There are basically two ways you can change the viewport of your plot - that is, to zoom in or out, or to change the position of the viewport. On one hand there’s the possibility of adding xlim and ylim arguments to the coord_cartesian function, which is the default coordinate system for ggplot objects. Here, we set the x dimension to go from 0 to 100 and the y dimension to go from 10 to 20, even though our data might not span this range. Then there’s also the possibility to directly call the xlim and ylim functions and add them to the ggplot_object. Does this give the same results?</p>
+<p><strong>4. coord_cartesian vs. xlim / ylim</strong></p>
+<p>Almost! The difference is subtle but important. Using coord_cartesian retains all data points in the plot, while using xlim or ylim actually clips the data and removes points outside of the viewport. This may result in ugly artifacts. So, I would argue it’s generally better to use coord_cartesian.</p>
+<p>1 Taken from RStudio Data Visualization Cheat Sheet (<a href="https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf" class="uri">https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf</a>)</p>
+<p><strong>5. &lt;&lt;<New Slide>&gt;&gt;</strong></p>
+<p>After this last correction, you will apply your previously defined theme. That’s how the plot will look after this. It contains everything a good plot needs: A descriptive title, axes titles and labels as well as the data source. People who look at the plot will immediately understand what it is about, and the ordering of the items makes comparing countries easy. Also, the plot looks not like a normal ggplot, rather it’s customized and especially aesthetic thanks to your own theme.</p>
+<p><strong>6. Desktop vs. Mobile audiences</strong></p>
+<p>However, there’s still a problem. While your plot works great on Desktop monitors, looking at it on a mobile device is painful. See? That’s how it would look. The fonts are way too small and only a small fraction of the screen is filled out. People would have to turn their phone to see the plot in the right aspect ratio. If they don’t do that – and don’t ever expect it – they have to tediously zoom in and out and pan around to grasp the big picture of the plot. Here’s an alternative proposal. The plot now has a 16:9 portrait aspect ratio, which fits most smartphone screens nicely. You may not see it on the slides, but the font size is bigger and thus more readable. Also: The axes are completely missing, and the country labels have been shifted to the inside of the plot, right under the arrows. This way, we can save the space the axes take. Actually, after shifting the country labels to the data items, they were superfluous anyway, because the weekly working hours for both years were already shown in the plot, too. In the following exercises, you will not only finalize the desktop version of your plot, but also customize it so it works better on mobile devices and thus on social media.</p>
+<p><strong>7. Let’s produce these plots!</strong></p>
+<p>Let’s do this!</p>
+<div id="change-the-viewport-so-labels-dont-overlap-with-plot-border" class="section level3">
+<h3><strong>Change the viewport so labels don’t overlap with plot border</strong></h3>
+<p>Use a function introduced in the previous video to change the viewport of the plotting area. Also apply your custom theme.</p>
+<p><strong>Instructions</strong></p>
+<ul>
+<li>Fix the label overlap problem by resetting the x-limits of the cartesian coordinate system to <code>25</code> and <code>41</code>. Make sure to use a function that doesn’t clip the geometries in your plot.</li>
+<li>Remember your custom <code>theme_ilo()</code> function? Apply it to the plot.</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBSZXVzZSBpbG9fZG90X3Bsb3Rcbmlsb19kb3RfcGxvdCA8LSBpbG9fZG90X3Bsb3QgK1xuICAjIEFkZCBsYWJlbHMgdG8gdGhlIHBsb3RcbiAgbGFicyhcbiAgICB4ID0gXCJXb3JraW5nIGhvdXJzIHBlciB3ZWVrXCIsXG4gICAgeSA9IFwiQ291bnRyeVwiLFxuICAgIHRpdGxlID0gXCJQZW9wbGUgd29yayBsZXNzIGluIDIwMDYgY29tcGFyZWQgdG8gMTk5NlwiLFxuICAgIHN1YnRpdGxlID0gXCJXb3JraW5nIGhvdXJzIGluIEV1cm9wZWFuIGNvdW50cmllcywgZGV2ZWxvcG1lbnQgc2luY2UgMTk5NlwiLFxuICAgIGNhcHRpb24gPSBcIkRhdGEgc291cmNlOiBJTE8sIDIwMTdcIlxuICApICtcbiAgIyBBcHBseSB5b3VyIHRoZW1lXG4gIF9fXyArXG4gICMgQ2hhbmdlIHRoZSB2aWV3cG9ydFxuICBfX18oX19fID0gYyhfX18sIF9fXykpXG4gIFxuIyBWaWV3IHRoZSBwbG90XG5pbG9fZG90X3Bsb3RcbmBgYCJ9 -->
+<pre class="r"><code># Reuse ilo_dot_plot
+ilo_dot_plot &lt;- ilo_dot_plot +
+  # Add labels to the plot
+  labs(
+    x = &quot;Working hours per week&quot;,
+    y = &quot;Country&quot;,
+    title = &quot;People work less in 2006 compared to 1996&quot;,
+    subtitle = &quot;Working hours in European countries, development since 1996&quot;,
+    caption = &quot;Data source: ILO, 2017&quot;
+  ) +
+  # Apply your theme
+  ___ +
+  # Change the viewport
+  ___(___ = c(___, ___))
+  
+# View the plot
+ilo_dot_plot</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiMDIgLSBDcmVhdGluZyBhIGN1c3RvbSBhbmQgdW5pcXVlIHZpc3VhbGl6YXRpb24iCm91dHB1dDogaHRtbF9ub3RlYm9vawplZGl0b3Jfb3B0aW9uczogCiAgY2h1bmtfb3V0cHV0X3R5cGU6IGlubGluZQotLS0KCmBgYHtyLCBlY2hvID0gRkFMU0UsIHdhcm5pbmcgPSBGQUxTRSwgbWVzc2FnZSA9IEZBTFNFfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKaWxvX3dvcmtpbmdfaG91cnMgPC0gbG9hZCgiflVzZXJzL1ZCb3JnZXNKci9Eb2N1bWVudHMvR2l0SHViL0RhdGFDYW1wL0RhdGEtQW5hbHlzdC13aXRoLVIvQ29tbXVuaWNhdGluZy13aXRoLURhdGEtaW4tdGhlLVRpZHl2ZXJzZS9kYXRhc2V0cy9pbG9fd29ya2luZ19ob3Vycy5SRGF0YSIpCmlsb19ob3VybHlfY29tcGVuc2F0aW9uIDwtIGxvYWQoIn5Vc2Vycy9WQm9yZ2VzSnIvRG9jdW1lbnRzL0dpdEh1Yi9EYXRhQ2FtcC9EYXRhLUFuYWx5c3Qtd2l0aC1SL0NvbW11bmljYXRpbmctd2l0aC1EYXRhLWluLXRoZS1UaWR5dmVyc2VkYXRhc2V0cy9pbG9faG91cmx5X2NvbXBlbnNhdGlvbi5SRGF0YSIpCgpgYGAKCgojIyAqKlZpc3VhbGl6aW5nIGFzcGVjdHMgb2YgZGF0YSB3aXRoIGZhY2V0cyoqCgoqKjEuIFZpc3VhbGl6aW5nIGFzcGVjdHMgb2YgZGF0YSB3aXRoIGZhY2V0cyoqCgpXZWxjb21lIHRvIHRoZSBzZWNvbmQgY2hhcHRlciBvZiB0aGlzIGNvdXJzZS4gSW4gdGhpcyBjaGFwdGVyLCB5b3UgYXJlIGdvaW5nIHRvIGV4cGxvcmUgYSBsZXNzIGNvbnZlbnRpb25hbCBmb3JtIG9mIHZpc3VhbGl6YXRpb24sIHRoZSBkb3QgcGxvdC4gQnV0IGJlZm9yZSB0aGF0LCB3ZSBhcmUgZ29pbmcgdG8gcXVpY2tseSByZXZpc2UgZmFjZXRpbmcg4oCTIGEgbmljZSBnZ3Bsb3Qtd2F5IG9mIGxvb2tpbmcgYXQgZGlmZmVyZW50IGFzcGVjdHMgb2YgYSBkYXRhIHNldC4KCioqMi4gVGhlIGZhY2V0X2dyaWQoKSBmdW5jdGlvbioqCgpZb3UgbWF5IGFscmVhZHkga25vdyBhYm91dCB0aGUgZmFjZXRfd3JhcCBmdW5jdGlvbiBmcm9tIHByZXZpb3VzIGNvdXJzZXMuIEhlcmUsIHlvdSdsbCBsZWFybiBhYm91dCB0aGUgZmFjZXRfZ3JpZCBmdW5jdGlvbi4gSXRzIGFkdmFudGFnZSBpcyB0aGF0IHlvdSBjYW4gZGV0ZXJtaW5lIHdoZXRoZXIgeW91IHdhbnQgdG8gb3JkZXIgdGhlIGZhY2V0cyBob3Jpem9udGFsbHkgb3IgdmVydGljYWxseS4gRm9yIHRoYXQsIHRoZSBmaXJzdCBhcmd1bWVudCBnaXZlbiB0byB0aGUgZnVuY3Rpb24gaXMgc2xpZ2h0bHkgZGlmZmVyZW50IHRoYW4gZm9yIGZhY2V0X3dyYXAuIEl0IGFsd2F5cyB0YWtlcyBhIGZvcm11bGEsIHdoaWNoIGlzIGRlbm90ZWQgYnkgdGhlIHRpbGRlIGluIHRoZSBtaWRkbGUgb2YgdGhlIGZvcm11bGEuIE9uIHRoZSByaWdodC1oYW5kIHNpZGUgeW91IHNwZWNpZnkgd2hhdCB2YXJpYWJsZSB3aWxsIGRldGVybWluZSB0aGUgY29sdW1ucyBvZiB0aGUgcGxvdCwgd2hpbGUgdGhlIGxlZnQtaGFuZCBzaWRlIHZhcmlhYmxlIHdpbGwgZGV0ZXJtaW5lIHRoZSByb3dzIG9mIHRoZSBwbG90LiBJZiB5b3Ugd2FudCB0byBmYWNldCBieSBvbmUgdmFyaWFibGUgb25seSwgdXNlIHRoZSBkb3QgdG8gaW5kaWNhdGUgdGhhdCB0aGVyZSBzaG91bGQgYmUgbm8gZmFjZXRpbmcgb24gdGhpcyBkaW1lbnNpb24uCgoqKjMuIFRoZSBmYWNldF9ncmlkKCkgZnVuY3Rpb24qKgoKQWN0dWFsbHksIHRoZSBmYWNldF9ncmlkIGNhbGwgd2l0aCAuIH4geWVhciBnaXZlcyBpZGVudGljYWwgcmVzdWx0cyBhcyBmYWNldF93cmFwIHdpdGggdGhlIHNhbWUgZm9ybXVsYS4gTm90aWNlLCBob3dldmVyLCB0aGF0IHRoZSBkb3QgbmVlZHMgdG8gYmUgcmVtb3ZlZCBmcm9tIHRoZSBmb3JtdWxhIGluIGZhY2V0X3dyYXAg4oCTIHdlIHVzdWFsbHkgY2FsbCB0aGlzIGEgb25lLXNpZGVkIGZvcm11bGEsIHdoaWxlIGZhY2V0X2dyaWQgdGFrZXMgYSB0d28tc2lkZWQgZm9ybXVsYS4KCioqNC4gQSBmYWNldGVkIHNjYXR0ZXIgcGxvdCoqCgpJbiB0aGUgbGFzdCBleGVyY2lzZSwgeW91IGdlbmVyYXRlZCB0aGlzIG5pY2UtbG9va2luZyBzY2F0dGVyIHBsb3QuIEl0IHNob3dzIHVzIHRoZSByZWxhdGlvbnNoaXAgaW4gdGhlIHllYXIgMjAwNi4gSW4gdGhlIGhpc3RvZ3JhbXMgZm9yIGJvdGggeWVhcnMgd2Ugc2F3IHRoYXQgdGhlIHdlZWtseSB3b3JraW5nIGhvdXJzIGhhdmUgYmVlbiBkZWNyZWFzaW5nIG92ZXJhbGwuIFRoYXQgbWVhbnMsIGluIDE5OTYgdGhlcmUgd2VyZSBtb3JlIGNvdW50cmllcyB3aXRoIGhpZ2hlciB3b3JraW5nIGhvdXJzIHRoYW4gaW4gMjAwNi4gQnV0IHdoYXQgaGFwcGVucyB0byB0aGUgcmVsYXRpb25zaGlwIGJldHdlZW4gd29ya2luZyBob3VycyBhbmQgaG91cmx5IGNvbXBlbnNhdGlvbj8gWW91J3JlIGdvaW5nIHRvIGV4cGxvcmUgdGhpcyBpbiB0aGUgZXhlcmNpc2VzLCB3aGVyZSB5b3Ugd2lsbCBmYWNldCB0aGlzIHNjYXR0ZXIgcGxvdCwgc28gdGhlcmUgYXJlIHR3byBkaWZmZXJlbnQgZmFjZXRzIGZvciBib3RoIHRoZSB5ZWFycy4KCioqNS4gU3R5bGluZyBmYWNldGVkIHBsb3RzKioKCkFub3RoZXIgcmVhc29uIHdlIGFyZSByZXZpc2l0aW5nIGZhY2V0aW5nIGhlcmUgaXMgdGhhdCB0aGVyZSBhcmUgc29tZSBzcGVjaWZpYyB0aGVtZSBvcHRpb25zIGZvciBmYWNldGVkIHBsb3RzLCBsaWtlIHN0cmlwLmJhY2tncm91bmQgYW5kIHN0cmlwLnRleHQuIFRoZXkgY2FuIGJlIHVzZWQgdG8gc3R5bGUgdGhlIHNtYWxsIHRpdGxlcyB0aGF0IGFyZSBnaXZlbiB0byBlYWNoIGZhY2V0LCBoZXJlIGRpc3BsYXlpbmcgdGhlIHJlc3BlY3RpdmUgeWVhci4KCioqNi4gRGVmaW5pbmcgeW91ciBvd24gdGhlbWUgZnVuY3Rpb24qKgoKQW5vdGhlciBoZWxwZnVsIHRoaW5nIHlvdSBhcmUgZ29pbmcgdG8gdHJ5IG91dCBpbiB0aGUgZXhlcmNpc2VzIGlzIGRlZmluaW5nIHlvdXIgb3duIHRoZW1lIGZ1bmN0aW9uLiBCYXNpY2FsbHksIGEgZnVuY3Rpb24gZGVmaW5pdGlvbiB3b3JrcyBsaWtlIHRoaXM6IFlvdSBkZWZpbmUgYSBuZXcgdmFyaWFibGUsIHRoZSBuYW1lIG9mIHRoZSBmdW5jdGlvbi4gVGhpcyBuYW1lLCBpbiB0aGlzIGNhc2UgdGhlbWVfZ3JlZW4sIGlzIGZvbGxvd2VkIGJ5IHRoZSBhc3NpZ25tZW50IG9wZXJhdG9yIGFuZCB0aGUgZnVuY3Rpb24ga2V5d29yZCwgd2hpY2ggaXMgdGhlbiBmb2xsb3dlZCBieSBwYXJlbnRoZXNlcyBhbmQgYW4gb3BlbmluZyBjdXJseSBicmFja2V0LiBBZnRlciB0aGF0LCB0aGUgc28tY2FsbGVkIGZ1bmN0aW9uIGJvZHkgZGVmaW5lcyB3aGF0J3MgaGFwcGVuaW5nIG9uY2UgdGhpcyBmdW5jdGlvbiBpcyBleGVjdXRlZC4gSGVyZSwgeW91IGp1c3QgY2FsbCBhIG5vcm1hbCBnZ3Bsb3QyIHRoZW1lIGZ1bmN0aW9uIHdpdGggeW91ciBvd24gY3VzdG9tIHRoZW1lIG9wdGlvbnMuIFlvdSB0aGVuIGNsb3NlIHRoZSBmdW5jdGlvbiBib2R5IHdpdGggYSBjdXJseSBicmFja2V0LiBUaGUgY29vbCB0aGluZyBhYm91dCBhIGN1c3RvbSB0aGVtZSBmdW5jdGlvbiBpcyB0aGF0IHlvdSBjYW4gdGhlbiBhcHBseSBpdCB0byBhbnkgcGxvdCBvYmplY3QgeW91IGxpa2UuIElmIHdlIGFwcGx5IG91ciBuZXcgdGhlbWVfZ3JlZW4tZnVuY3Rpb24gdG8gdGhlIGhpc3RvZ3JhbSwgaXQgcXVpY2tseSBjaGFuZ2VzIGl0cyBhcHBlYXJhbmNlLiBXZWxsLi4gdGhpcyBwbG90IGNlcnRhaW5seSBkb2Vzbid0IHdpbiBhIGJlYXV0eSBjb250ZXN0LCBidXQgeW91IGdldCB0aGUgaWRlYS4gWW91J3JlIGdvaW5nIHRvIHRyeSB0aGlzIG91dCBpbiB0aGUgZXhlcmNpc2VzLgoKKio3LiBMZXQncyBwcmFjdGljZSEqKgoKTGV0J3MgZG8gaXQhCgojIyMgKipQcmVwYXJlIHRoZSBkYXRhIHNldCBmb3IgdGhlIGZhY2V0ZWQgcGxvdCoqCgpZb3UncmUgbm93IGdvaW5nIHRvIHByZXBhcmUgeW91ciBkYXRhIHNldCBmb3IgcHJvZHVjaW5nIHRoZSBmYWNldGVkIHNjYXR0ZXIgcGxvdCBpbiB0aGUgbmV4dCBleGVyY2lzZSwgYXMgbWVudGlvbmVkIGluIHRoZSB2aWRlby4KRm9yIHRoaXMsIHRoZSBkYXRhIHNldCBuZWVkcyB0byBjb250YWluIG9ubHkgdGhlIHllYXJzIDE5OTYgYW5kIDIwMDYsIGJlY2F1c2UgeW91ciBwbG90IHdpbGwgb25seSBoYXZlIHR3byBmYWNldHMuIGBpbG9fZGF0YWAgaGFzIGJlZW4gcHJlLWxvYWRlZCBmb3IgeW91LgoKSW5zdHJ1Y3Rpb25zCjEwMCBYUApVc2UgYGZpbHRlcigpYCB0byBvbmx5IHJldGFpbiB0aGUgeWVhcnMgMTk5NiBhbmQgMjAwNiBpbiB0aGUgZGF0YSBzZXQuClVzZSB0aGUgT1Igb3BlcmF0b3IgaW4geW91ciBgZmlsdGVyKClgIGZ1bmN0aW9uIGNhbGwuCgpgYGB7cn0KIyBGaWx0ZXIgaWxvX2RhdGEgdG8gcmV0YWluIHRoZSB5ZWFycyAxOTk2IGFuZCAyMDA2Cmlsb19kYXRhIDwtIGlsb19kYXRhICU+JQogIF9fXwpgYGAKCiMjIyAqKkFkZCBmYWNldHMgdG8gdGhlIHBsb3QqKgoKSGVyZSwgeW91J2xsIGxldmVyYWdlIGBmYWNldF9ncmlkKClgIHRvIGFkZCBob3Jpem9udGFsIGZhY2V0cyBmb3IgMTk5NiBhbmQgMjAwNiBlYWNoLCBhcyBkZXRhaWxlZCBpbiB0aGUgdmlkZW8uCgpXaGVuIHVzaW5nIGBmYWNldF9ncmlkKClgLCBpdCBpcyBnb29kIHByYWN0aWNlIHRvIHNwZWNpZnkgdGhlIGZhY2V0IGZvcm11bGEgd2l0aCBhIG5hbWVkIGFyZ3VtZW50OiBgZmFjZXRzID0gLi4uYC4gVGhpcyBoZWxwcyB0byBhdm9pZCBjb25mdXNpb24gc2luY2UgdGhlIGBmYWNldF9ncmlkKClgIGZ1bmN0aW9uIHRha2VzIG1hbnkgb3RoZXIgYXJndW1lbnRzLgoKKipJbnN0cnVjdGlvbnMqKgoKLSBVc2UgYGZhY2V0X2dyaWQoKWAgd2l0aCB0aGUgcmlnaHQgZm9ybXVsYSB0byBnZW5lcmF0ZSB0d28gc2VwYXJhdGUgc2NhdHRlciBwbG90cyB0aGF0IGFyZSBhcnJhbmdlZCBob3Jpem9udGFsbHkuCi0gVGhlIGxlZnQgcGxvdCBzaG91bGQgc2hvdyB0aGUgZGF0YSBmb3IgdGhlIHllYXIgMTk5NiB3aGlsZSB0aGUgeWVhciAyMDA2IHNob3VsZCBiZSBzaG93biBvbiB0aGUgcmlnaHQgc2lkZS4KCmBgYHtyfQojIEFnYWluLCB5b3Ugc2F2ZSB0aGUgcGxvdCBvYmplY3QgaW50byBhIHZhcmlhYmxlIHNvIHlvdSBjYW4gc2F2ZSB0eXBpbmcgbGF0ZXIgb24KaWxvX3Bsb3QgPC0gZ2dwbG90KGlsb19kYXRhLCBhZXMoeCA9IHdvcmtpbmdfaG91cnMsIHkgPSBob3VybHlfY29tcGVuc2F0aW9uKSkgKwogIGdlb21fcG9pbnQoKSArCiAgIGxhYnMoCiAgICB4ID0gIldvcmtpbmcgaG91cnMgcGVyIHdlZWsiLAogICAgeSA9ICJIb3VybHkgY29tcGVuc2F0aW9uIiwKICAgIHRpdGxlID0gIlRoZSBtb3JlIHBlb3BsZSB3b3JrLCB0aGUgbGVzcyBjb21wZW5zYXRpb24gdGhleSBzZWVtIHRvIHJlY2VpdmUiLAogICAgc3VidGl0bGUgPSAiV29ya2luZyBob3VycyBhbmQgaG91cmx5IGNvbXBlbnNhdGlvbiBpbiBFdXJvcGVhbiBjb3VudHJpZXMsIDIwMDYiLAogICAgY2FwdGlvbiA9ICJEYXRhIHNvdXJjZTogSUxPLCAyMDE3IgogICkgKwogICMgQWRkIGZhY2V0cyBoZXJlCiAgX19fKF9fXykKIAppbG9fcGxvdApgYGAKCiMjIyAqKkRlZmluZSB5b3VyIG93biB0aGVtZSBmdW5jdGlvbioqCgpJbiB0aGUgdmlkZW8geW91IHNhdyBob3cgYSBsb3Qgb2YgdHlwaW5nIGNhbiBiZSBzYXZlZCBieSByZXBsYWNpbmcgY29kZSBjaHVua3Mgd2l0aCBmdW5jdGlvbiBjYWxscy4gWW91IHNhdyBob3cgYSBmdW5jdGlvbiBpcyB1c3VhbGx5IGRlZmluZWQsIG5vdyB5b3Ugd2lsbCBhcHBseSB0aGlzIGtub3dsZWRnZSBpbiBvcmRlciB0byBtYWtlIHlvdXIgcHJldmlvdXMgdHdvIGB0aGVtZSgpYCBjYWxscyByZXVzYWJsZS4KCioqSW5zdHJ1Y3Rpb25zKioKCi0gVXNpbmcgeW91ciBuZXcga25vd2xlZGdlIGFib3V0IGZ1bmN0aW9uIGRlZmluaXRpb25zLCBjcmVhdGUgYSBmdW5jdGlvbiBuYW1lZCBgdGhlbWVfaWxvKClgIHRoYXQgZW5jYXBzdWxhdGVzIHlvdXIgdGhlbWUgc2V0dGluZ3MuCi0gVGhlIGZ1bmN0aW9uIGJvZHkgc2hvdWxkIGNvbnRhaW4gYm90aCBgdGhlbWUoKWAgY2FsbHMgdGhhdCB5b3Ugd291bGQgbm9ybWFsbHkgYXBwbHkgZGlyZWN0bHkgdG8gYSBwbG90IG9iamVjdDogYHRoZW1lX21pbmltYWwoKSArYCB5b3VyIGN1c3RvbWl6ZWQgYHRoZW1lKClgIGZ1bmN0aW9uLgotIENvcHkgd2hhdCB5b3UgZGlkIGJlZm9yZSBpbnRvIHRoaXMgYHRoZW1lX2lsbygpYCBmdW5jdGlvbiwgdXNpbmcgdGhlIGB0aGVtZSgpYCBzZXR0aW5ncyBwcm92aWRlZCBpbiB0aGUgc2FtcGxlIGNvZGUuCgpgYGB7cn0KIyBGb3IgYSBzdGFydGVyLCBsZXQncyBsb29rIGF0IHdoYXQgeW91IGRpZCBiZWZvcmU6IGFkZGluZyB2YXJpb3VzIHRoZW1lIGNhbGxzIHRvIHlvdXIgcGxvdCBvYmplY3QKaWxvX3Bsb3QgKwogIHRoZW1lX21pbmltYWwoKSArCiAgdGhlbWUoCiAgICB0ZXh0ID0gZWxlbWVudF90ZXh0KGZhbWlseSA9ICJCb29rbWFuIiwgY29sb3IgPSAiZ3JheTI1IiksCiAgICBwbG90LnN1YnRpdGxlID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMiksCiAgICBwbG90LmNhcHRpb24gPSBlbGVtZW50X3RleHQoY29sb3IgPSAiZ3JheTMwIiksCiAgICBwbG90LmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbCA9ICJncmF5OTUiKSwKICAgIHBsb3QubWFyZ2luID0gdW5pdChjKDUsIDEwLCA1LCAxMCksIHVuaXRzID0gIm1tIikKICApCiAgICAgIAojIERlZmluZSB5b3VyIG93biB0aGVtZSBmdW5jdGlvbiBiZWxvdwp0aGVtZV9pbG8gPC0gZnVuY3Rpb24oKSB7CiAgICBfX18oKSArCiAgICBfX18oCiAgICAgICAgX19fCiAgICApCn0KYGBgCgojIyMgKipBcHBseSB0aGUgbmV3IHRoZW1lIGZ1bmN0aW9uIHRvIHRoZSBwbG90KioKCk9uY2UgeW91IGhhdmUgY3JlYXRlZCB5b3VyIG93biBgdGhlbWVfaWxvKClgIGZ1bmN0aW9uLCBpdCBpcyB0aW1lIHRvIGFwcGx5IGl0IHRvIGEgcGxvdCBvYmplY3QuIEluIHRoZSB2aWRlbyB5b3Ugc2F3IHRoYXQgYHRoZW1lKClgIGNhbGxzIGNhbiBiZSBjaGFpbmVkLiBZb3UncmUgZ29pbmcgdG8gbWFrZSB1c2Ugb2YgdGhpcyBhbmQgYWRkIGFub3RoZXIgYHRoZW1lKClgIGNhbGwgdG8gYWRqdXN0IHNvbWUgcGVjdWxpYXJpdGllcyBvZiB0aGUgZmFjZXRlZCBwbG90LgoKKipJbnN0cnVjdGlvbnMqKgoKLSBGcm9tIG5vdyBvbiwgeW91IGNhbiBqdXN0IGFkZCBgdGhlbWVfaWxvKClgIHRvIGFueSBwbG90IG9iamVjdCB5b3Ugd2lzaC4gVHJ5IGl0IG91dCEgT3ZlcndyaXRlIHRoZSBgaWxvX3Bsb3RgIHZhcmlhYmxlIHNvIGB0aGVtZV9pbG8oKWAgaXMgYXBwbGllZCBwZXJtYW5lbnRseS4KLSBDb21iaW5lIHlvdXIgY3VzdG9tIHRoZW1lIGZ1bmN0aW9uIHdpdGggZXZlbiBmdXJ0aGVyIGB0aGVtZSgpYCBjYWxscyB0byBmbGV4aWJseSBhZGp1c3Qgc2V0dGluZ3MgZm9yIGFkdmFuY2VkIHBsb3RzLgogIC0gSW4gb3JkZXIgdG8gZG8gdGhhdCwgYWRkIGFub3RoZXIgYHRoZW1lKClgIGNhbGwgYWZ0ZXIgdGhlIGB0aGVtZV9pbG8oKWAgY2FsbC4KICAtIENoYW5nZSB0aGUgYmFja2dyb3VuZCBmaWxsIG9mIHRoZSBmYWNldCBsYWJlbHMgdG8gYCJncmF5NjAiYCBhbmQgdGhlaXIgY29sb3IgdG8gYCJncmF5OTUiYCwgdXNpbmcgdGhlIGBzdHJpcC5iYWNrZ3JvdW5kYCBhcmd1bWVudC4KICAtIENoYW5nZSB0aGUgY29sb3Igb2YgdGhlIGZhY2V0IGxhYmVscyB0byBgIndoaXRlImAuCiAgCmBgYHtyfQojIEFwcGx5IHlvdXIgdGhlbWUgZnVuY3Rpb24gKGRvbnQndCBmb3JnZXQgdG8gY2FsbCBpdCB3aXRoIHBhcmVudGhlc2VzISkKaWxvX3Bsb3QgPC0gaWxvX3Bsb3QgKwogIF9fXwoKIyBFeGFtaW5lIGlsb19wbG90Cmlsb19wbG90CgppbG9fcGxvdCArCiAgIyBBZGQgYW5vdGhlciB0aGVtZSBjYWxsCiAgX19fKAogICAgIyBDaGFuZ2UgdGhlIGJhY2tncm91bmQgZmlsbCBhbmQgY29sb3IKICAgIHN0cmlwLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoX19fLCBfX18pLAogICAgIyBDaGFuZ2UgdGhlIGNvbG9yIG9mIHRoZSB0ZXh0CiAgICBzdHJpcC50ZXh0ID0gZWxlbWVudF90ZXh0KF9fXykKICApCmBgYAogIAojIyAqKkEgY3VzdG9tIHBsb3QgdG8gZW1waGFzaXplIGNoYW5nZSoqIAoKKioxLiBBIGN1c3RvbSBwbG90IHRvIGVtcGhhc2l6ZSBjaGFuZ2UqKgoKR3JlYXQgam9iISBGcm9tIHRoZSBwbG90IHlvdSBqdXN0IHByb2R1Y2VkIHdlIHNlZSB0aGF0IHRoZXJlIHdhcyBhIG5lZ2F0aXZlIGNvcnJlbGF0aW9uIGJldHdlZW4gd29ya2luZyBob3VycyBhbmQgaG91cmx5IGNvbXBlbnNhdGlvbiBhbHNvIGluIDE5OTYuCgoqKjIuIDw8PE5ldyBTbGlkZT4+PioqCgpIb3dldmVyLCBzb21lIGNvdW50cmllcyBzZWVtIHRvIGhhdmUgc2hpZnRlZCB0aGVpciBwb3NpdGlvbi4gSW4gMjAwNiwgdGhlcmUgYXJlIG1vcmUgY291bnRyaWVzIHdpdGggaGlnaGVyIGhvdXJseSBjb21wZW5zYXRpb24sIGFuZCBhbHNvIG1vcmUgd2l0aCBsZXNzIHdlZWtseSB3b3JraW5nIGhvdXJzLiBGcm9tIHRoaXMgc2NhdHRlciBwbG90LCB3ZSBjYW4ndCByZWFsbHkgdGVsbCB3aGljaCBjb3VudHJpZXMgaGF2ZSBtYWRlIHRoZSBiaWdnZXN0IHNoaWZ0LgoKKiozLiBUaGUgZG90IHBsb3QqKgoKQSBnb29kIHZpc3VhbGl6YXRpb24gZm9ybSBmb3Igc2hvd2luZyBjaGFuZ2Ugb3ZlciB0aW1lIGluIG9uZSB2YXJpYWJsZSBpcyB0aGUgc28tY2FsbGVkIGRvdCBwbG90LiBJdCBpcyBvZnRlbiB1c2VkIGluIGRhdGEgam91cm5hbGlzbSBmb3IgY29tcGFyaW5nIHRoZSBjaGFuZ2Ugb2YgZGlmZmVyZW50IGVudGl0aWVzIGxpa2UgY291bnRyaWVzLiBIZXJlJ3MgYW4gZXhhbXBsZSBmcm9tIHRoZSBOZXcgWW9yayBUaW1lcywgd2hpY2ggc2hvd3Mgd2hhdCBzaGFyZSBvZiB0aGUgb3ZlcmFsbCBuYXRpb25hbCBpbmNvbWUgdGhlIHJpY2hlc3QgMSBwZXJjZW50IGhhdmUgZ290LiBGb3IgZXhhbXBsZSwgYXJvdW5kIDE5ODAsIHRoZSByaWNoZXN0IDEgcGVyY2VudCBpbiB0aGUgVVMgaGFkIDExIHBlcmNlbnQgb2YgdGhlIG5hdGlvbmFsIGluY29tZSDigJMgbm93YWRheXMgdGhleSd2ZSBnb3QgMjAgcGVyY2VudC4gVGhlIGRvdCBwbG90IG5vdCBvbmx5IHNob3dzIHdoaWNoIGNvdW50cnkgbWFkZSB0aGUgYmlnZ2VzdCBzdGVwIGludG8gYW55IGRpcmVjdGlvbiwgaXQgYWxzbyBzaG93cyB1cyB0aGUgdmFsdWVzIGZvciBib3RoIHllYXJzIHRoYXQgYXJlIGNvbXBhcmVkLiBUaHVzLCBpdCBpcyB3ZWxsIHN1aXRlZCB0byBzaG93aW5nIGNoYW5nZSBvdmVyIHRpbWUgd2hpbGUgYWxzbyBwcmVzZW50aW5nIHNvbWUgc29ydCBvZiByYW5rIGJldHdlZW4gaXRlbXMuCgoxIE5ldyBZb3JrIFRpbWVzIChodHRwczovL3d3dy5ueXRpbWVzLmNvbS8yMDE3LzExLzE3L3Vwc2hvdC9pbmNvbWUtaW5lcXVhbGl0eS11bml0ZWQtc3RhdGVzLmh0bWwpe3swfX0KCioqNC4gRG90IHBsb3RzIHdpdGggZ2dwbG90MioqCgpEb3QgcGxvdHMgY2FuIGJlIGVhc2lseSBjcmVhdGVkIGluIGdncGxvdDIuIE5vdywgd2hpbGUgdGhlcmUgaXMgYSBzcGVjaWZpYyBnZW9tZXRyeSBjYWxsZWQgZ2VvbV9kb3RwbG90LCBpdCdzIGFjdHVhbGx5IG5vdCB3aGF0IHdlIGFyZSBsb29raW5nIGZvci4gZ2VvbV9kb3RwbG90IGJhc2ljYWxseSBwcm9kdWNlcyBhIGhpc3RvZ3JhbSB3aXRoIGRvdHMsIGFzIHlvdSBjYW4gc2VlIGluIHRoZSBjb2RlIGV4YW1wbGUgaGVyZS4gVGhlIHkgYXhpcyBub3cgc2hvd3MgdGhlIHNoYXJlIG9mIGNvdW50cmllcyB3aXRoIHNwZWNpZmljIHdvcmtpbmcgaG91cnMsIHdoaWxlIHRoZSBkb3RzIHJlcHJlc2VudCB0aGUgYWN0dWFsIGNvdW50cmllcyBpbiBlYWNoIGNhdGVnb3J5LiBUaGUgdGVybWlub2xvZ3kgaW4gZGF0YSB2aXMgaXMgbm90IHNhY3JlZCwgc28gZGlmZmVyZW50IHRoaW5ncyBjYW4gaGF2ZSBzYW1lIG5hbWVzLiBGb3IgdGhlIGRvdCBwbG90IHlvdSBhcmUgZ29pbmcgdG8gcHJvZHVjZSBpbiB0aGUgbmV4dCBleGVyY2lzZXMsIHlvdSB3aWxsIHVzZSBnZ3Bsb3QyJ3MgZ2VvbV9wYXRoIGZ1bmN0aW9uLgoKKio1LiBUaGUgZ2VvbV9wYXRoKCkgZnVuY3Rpb24qKgoKZ2VvbV9wYXRoIGlzIHVzZWZ1bCBmb3IgY3JlYXRpbmcgcGxvdHMgYmFzZWQgb24gZnVuZGFtZW50YWwgZ2VvbWV0cmljIGVsZW1lbnRzLCBzdWNoIGFzIGxpbmVzLiBJZiB5b3UgbG9vayBhdCB0aGUgaGVscCBmb3IgZ2VvbV9wYXRoLCBpdCB0ZWxscyB5b3UgdGhhdCBpdCBjb25uZWN0cyB0aGUgb2JzZXJ2YXRpb25zIGluIGEgZGF0YSBzZXQgaW4gdGhlIG9yZGVyIGluIHdoaWNoIHRoZXkgYXBwZWFyLiBMZXQncyBoYXZlIGEgbG9vayBhdCB5b3VyIGN1cnJlbnQgZGF0YSBzZXQuIEluIHRoZSBmaXJzdCBleGVyY2lzZSBvZiB0aGlzIGNoYXB0ZXIsIHlvdSBmaWx0ZXJlZCBpdCB0byBvbmx5IGNvbnRhaW4gdGhlIHllYXJzIDE5OTYgYW5kIDIwMDYuIElmIHlvdSBvcmRlciB0aGF0IGRhdGEgZnJhbWUgYnkgY291bnRyeSwgeW91IHNlZSB0aGF0IHRoZXJlIGFyZSB0d28gcm93cyBmb3IgZWFjaCBjb3VudHJ5LCByZXByZXNlbnRpbmcgYm90aCB5ZWFycy4gMTk5NiBhbHdheXMgY29tZXMgYmVmb3JlIDIwMDYsIHNvIGdlb21fcGF0aCB3aWxsIGRyYXcgYSBwYXRoIGZyb20gMTk5NiB0byAyMDA2LCBhcyB0aGVzZSB5ZWFycyBhcHBlYXIgaW4gdGhlIGRhdGEgc2V0LgoKKio2LiBEb3QgcGxvdHMgd2l0aCBgZ2dwbG90MmA6IHRoZSBgZ2VvbV9wYXRoKClgIGZ1bmN0aW9uKioKCmdlb21fcGF0aCByZXF1aXJlcyB0aGUgeC0gYW5kIHktYWVzdGhldGljIHRvIGJlIHNldC4gQm90aCBjYW4gYmUgbnVtZXJpYyB2YXJpYWJsZXMsIHNvIGdlb21fcGF0aCB3aWxsIGRyYXcgYSBwYXRoIGluIHRoZSB0d28tZGltZW5zaW9uYWwgcGxhbmUuIEhvd2V2ZXIsIG9uZSBvZiBib3RoIGNhbiBhbHNvIGJlIGEgZmFjdG9yIHZhcmlhYmxlLiBJZiB5b3Ugc3BlY2lmeSBhIG51bWVyaWMgdmFyaWFibGUgZm9yIHRoZSB4LWFlc3RoZXRpYywgYW5kIGEgZmFjdG9yIGZvciB0aGUgeS1hZXN0aGV0aWMsIGdlb21fcGF0aCB3aWxsIGRyYXcgYSBzaW5nbGUgcGF0aCBmb3IgZWFjaCB2YWx1ZSBpbiB0aGUgeS1hZXN0aGV0aWMsIHRoYXQgaXMsIGZvciBlYWNoIHZhbHVlIG9mIHRoZSBmYWN0b3IgdmFyaWFibGUuIEFsc28sIHlvdSBjYW4gYWRkIGFuIGFycm93IHRvIGVhY2ggcGF0aCwgdXNpbmcgdGhlIGFycm93IGFyZ3VtZW50IG91dHNpZGUgdGhlIGFlc3RoZXRpY3MgZnVuY3Rpb24uIFRoZSBhcnJvdyBhcmd1bWVudCBpbiB0dXJuIHRha2VzIGFuIGFycm93IGZ1bmN0aW9uIGNhbGwsIHdoZXJlIHlvdSBjYW4gc3BlY2lmeSB0aGUgdHlwZSBvZiB0aGUgYXJyb3cgaGVhZCBhbmQgb3RoZXIgc2V0dGluZ3MuIFRoZSBhcnJvdyB3aWxsIGJlIHBsYWNlZCBhdCB0aGUgbGFzdCBzZWN0aW9uIG9mIHlvdXIgcGF0aCBhbmQgdGh1cyBwb2ludCBpbnRvIHRoZSBzYW1lIGRpcmVjdGlvbiB0aGUgcGF0aCB3YXMgZHJhd24uCgoqKjcuIExldCdzIHRyeSBvdXQgZ2VvbV9wYXRoISoqCgpUaGlzIG1heSBzb3VuZCBhIGJpdCB0aGVvcmV0aWNhbCwgc28gbGV0J3MgbG9vayBhdCBhIGNvbmNyZXRlIGV4YW1wbGUgYW5kIGJ1aWxkIHlvdXIgZmlyc3QgaXRlcmF0aW9uIG9mIHRoZSBkb3QgcGxvdC4KCiMjIyAqKkEgYmFzaWMgZG90IHBsb3QqKgoKQXMgc2hvd24gaW4gdGhlIHZpZGVvLCB1c2Ugb25seSBgZ2VvbV9wYXRoKClgIHRvIGNyZWF0ZSB0aGUgYmFzaWMgc3RydWN0dXJlIG9mIHRoZSBkb3QgcGxvdC4KCioqSW5zdHJ1Y3Rpb25zKioKCi0gQ3JlYXRlIGEgbmV3IGdncGxvdCBvYmplY3Qgd2hpY2ggdGFrZXMgYGlsb19kYXRhYCBhcyBkYXRhIHNldC4KLSBBZGQgYSBgZ2VvbV9wYXRoKClgIGdlb21ldHJ5IHdoZXJlIHRoZSB3ZWVrbHkgd29ya2luZyBob3VycyBhcmUgbWFwcGVkIHRvIHRoZSB4LWF4aXMgYW5kIGNvdW50cmllcyB0byB0aGUgeS1heGlzLgoKYGBge3J9CiMgQ3JlYXRlIHRoZSBkb3QgcGxvdApfX18KYGBgCgojIyMgKipBZGQgYXJyb3dzIHRvIHRoZSBsaW5lcyBpbiB0aGUgcGxvdCoqCgpJbnN0ZWFkIG9mIGxhYmVsaW5nIHllYXJzLCB1c2UgdGhlIGBhcnJvd2AgYXJndW1lbnQgb2YgdGhlIGBnZW9tX3BhdGgoKWAgY2FsbCB0byBzaG93IHRoZSBkaXJlY3Rpb24gb2YgY2hhbmdlLiBUaGUgYXJyb3dzIHdpbGwgcG9pbnQgZnJvbSAxOTk2IHRvIDIwMDYsIGJlY2F1c2UgdGhhdCdzIGhvdyB0aGUgZGF0YSBzZXQgaXMgb3JkZXJlZC4gVGhlIGBhcnJvdygpYCBmdW5jdGlvbiB0YWtlcyB0d28gYXJndW1lbnRzOiBUaGUgZmlyc3QgaXMgYGxlbmd0aGAsIHdoaWNoIGNhbiBiZSBzcGVjaWZpZWQgd2l0aCBhIGB1bml0KClgIGNhbGwsIHdoaWNoIHlvdSBtaWdodCByZW1lbWJlciBmcm9tIHByZXZpb3VzIGV4ZXJjaXNlcy4gVGhlIHNlY29uZCBpcyBgdHlwZWAgd2hpY2ggZGVmaW5lcyBob3cgdGhlIGFycm93IGhlYWQgd2lsbCBsb29rLgoKKipJbnN0cnVjdGlvbnMqKgoKLSBVc2UgdGhlIGBhcnJvd2AgYXJndW1lbnQgYW5kIGFuIGBhcnJvdygpYCBmdW5jdGlvbiBjYWxsIHRvIGFkZCBhcnJvd3MgdG8gZWFjaCBsaW5lLgotIEZvciB0aGUgYXJyb3dzLCBzcGVjaWZ5IGEgYGxlbmd0aGAgb2YgYDEuNWAgYCJtbSJgICh3aXRoIGEgdW5pdCgpIGNhbGwpIGFuZCBhIGB0eXBlYCBvZiBgImNsb3NlZCJgLgoKYGBge3J9CmdncGxvdChpbG9fZGF0YSkgKwogIGdlb21fcGF0aChhZXMoeCA9IHdvcmtpbmdfaG91cnMsIHkgPSBjb3VudHJ5KSwKICAjIEFkZCBhbiBhcnJvdyB0byBlYWNoIHBhdGgKICBhcnJvdyA9IF9fXyhfX18gPSBfX18oX19fLCAiX19fIiksIF9fXyA9ICJfX18iKSkKYGBgCgojIyMgKipBZGQgc29tZSBsYWJlbHMgdG8gZWFjaCBjb3VudHJ5KioKCkEgbmljZSB0aGluZyB0aGF0IGNhbiBiZSBhZGRlZCB0byBwbG90cyBhcmUgYW5ub3RhdGlvbnMgb3IgbGFiZWxzLCBzbyByZWFkZXJzIHNlZSB0aGUgdmFsdWUgb2YgZWFjaCBkYXRhIHBvaW50IGRpc3BsYXllZCBpbiB0aGUgcGxvdCBwYW5lbC4gVGhpcyBvZnRlbiBtYWtlcyBheGVzIG9ic29sZXRlLCBhbiBhZHZhbnRhZ2UgeW91J3JlIGdvaW5nIHRvIHVzZSBpbiB0aGUgbGFzdCBleGVyY2lzZSBvZiB0aGlzIGNoYXB0ZXIuIFRoZXNlIGxhYmVscyBhcmUgdXN1YWxseSBhZGRlZCB3aXRoIGBnZW9tX3RleHQoKWAgb3IgYGdlb21fbGFiZWwoKWAuIFRoZSBsYXR0ZXIgYWRkcyBhIGJhY2tncm91bmQgdG8gZWFjaCBsYWJlbCwgd2hpY2ggaXMgbm90IG5lZWRlZCBoZXJlLgoKKipJbnN0cnVjdGlvbnMqKgoKLSBMYWJlbCBib3RoIHBvaW50cyBvbiB0aGUgbGluZSB3aXRoIHRoZWlyIHJlc3BlY3RpdmUgd29ya2luZyBob3VycyB2YWx1ZS4gVXNlIHRoZSBgZ2VvbV90ZXh0KClgIGZ1bmN0aW9uIGZvciB0aGlzLCB3aXRoIHRoZSB4LSBhbmQgeS1hZXN0aGV0aWMgaWRlbnRpY2FsIHRvIHRoZSBvbmUgaW4gdGhlIGBnZW9tX3BhdGgoKWAgY2FsbC4KLSBTcGVjaWZ5IHRoZSBgd29ya2luZ19ob3Vyc2AgdmFyaWFibGUgZm9yIHRoZSBgbGFiZWxgIGFyZ3VtZW50LiBSb3VuZCBgd29ya2luZ19ob3Vyc2AgdG8gb25lIGRpZ2l0IGFmdGVyIHRoZSBkZWNpbWFsIHBvaW50LgoKYGBge3J9CmdncGxvdChpbG9fZGF0YSkgKwogIGdlb21fcGF0aChhZXMoeCA9IHdvcmtpbmdfaG91cnMsIHkgPSBjb3VudHJ5KSwKICAgICAgICAgICAgYXJyb3cgPSBhcnJvdyhsZW5ndGggPSB1bml0KDEuNSwgIm1tIiksIHR5cGUgPSAiY2xvc2VkIikpICsKICAjIEFkZCBhIGdlb21fdGV4dCgpIGdlb21ldHJ5CiAgX19fKAogICAgICAgICAgYWVzKHggPSBfX18sCiAgICAgICAgICAgICAgeSA9IF9fXywKICAgICAgICAgICAgICBsYWJlbCA9IHJvdW5kKF9fXywgMSkpCiAgICAgICAgKQpgYGAKCiMjICoqUG9saXNoaW5nIHRoZSBkb3QgcGxvdCoqCgoqKjEuIFBvbGlzaGluZyB0aGUgZG90IHBsb3QqKgoKR3JlYXQgd29yay4gWW91J3ZlIGV4cGxvcmVkIGEgbmV3IHR5cGUgb2YgdmlzdWFsaXphdGlvbiBpbiBnZ3Bsb3QyLiBBY3R1YWxseSwgYnVpbGRpbmcgdGhlIHBsb3QgaXMgcXVpdGUgZWFzeSwgeW91IG9ubHkgdXNlZCB0aGUgZ2VvbV9wYXRoIGdlb21ldHJ5IGZvciB0aGUgbGluZXMgd2l0aCBhcnJvd3MsIGFuZCB0aGUgZ2VvbV90ZXh0IGdlb21ldHJ5IHRvIGFkZCBsYWJlbHMuCgoqKjIuIDw8PE5ldyBTbGlkZT4+PioqCgpCdXQgc3RpbGwsIGJ5IGp1c3QgbG9va2luZyBhdCB0aGUgcGxvdCB5b3UgY2FuIHByb2JhYmx5IHRlbGwgdGhhdCBpdCdzIGZhciBmcm9tIHBlcmZlY3QuIE9idmlvdXNseSwgdGhlIGxhYmVscyBzaG91bGQgYmUgYmV0dGVyIHBsYWNlZCDigJMgbm93LCB0aGV5IG92ZXJsYXAgd2l0aCB0aGUgbGluZXMuIEFsc28sIGl0J3MgaGFyZCB0byBjb21wYXJlIGNvdW50cmllcyB3aXRoIGVhY2ggb3RoZXIgYmVjYXVzZSB0aGV5IGFyZSBvcmRlcmVkIGFscGhhYmV0aWNhbGx5IGF0IHRoZSBtb21lbnQuIEl0J3Mgbm90IHN0cmFpZ2h0Zm9yd2FyZCB0byB0ZWxsIHdoaWNoIGNvdW50cnkgc3RpbGwgaGFzIHRoZSBoaWdoZXN0IHdlZWtseSB3b3JraW5nIGhvdXJzLiBUaGUgc29sdXRpb24gbGllcyBpbiBmYWN0b3IgbGV2ZWxzLgoKKiozLiBGYWN0b3IgbGV2ZWxzKioKCkZhY3RvcnMgYXJlIHVzZWQgdG8gZGVzY3JpYmUgY2F0ZWdvcmljYWwgdmFyaWFibGVzIHdpdGggYSBmaXhlZCBhbmQga25vd24gc2V0IG9mICoqbGV2ZWxzKiouIFRoZSBvcmRlciBvZiB0aGVzZSBsZXZlbHMgdXN1YWxseSBkZXRlcm1pbmVzIHRoZSBvcmRlciBvZiBhcHBlYXJhbmNlIGluIGdncGxvdDIgZ3JhcGhpY3MuIElmIHlvdSBsb29rIGF0IHRoZSBjb3VudHJ5IHZhcmlhYmxlIGJ5IHR5cGluZyBpbG9fZGF0YSRjb3VudHJ5IGluIHRoZSBSIGNvbnNvbGUsIHlvdSBnZXQgaXRzIHZhbHVlcyBidXQgYWxzbyBpdHMgbGV2ZWxzLCBsaXN0ZWQgaW4gdGhlIGFjdHVhbCBvcmRlci4KCioqNC4gUmVvcmRlcmluZyBmYWN0b3JzIHdpdGggdGhlIGZvcmNhdHMgcGFja2FnZSoqCgpXcmFuZ2xpbmcgZmFjdG9ycyBhbmQgZmFjdG9yIGxldmVscyBzb21ldGltZXMgY2FuIGJlIGEgYml0IHRlZGlvdXMuIEJ1dCB0aGVyZSdzIGEgc3BlY2lhbCBwYWNrYWdlIGZvciBtYWtpbmcgdGhpcyBlYXNpZXIsIGNhbGxlZCBmb3JjYXRzLiBJdCBpcyBwYXJ0IG9mIHRoZSBUaWR5dmVyc2UgYnV0IG5lZWRzIHRvIGJlIGxvYWRlZCBleHBsaWNpdGx5IHdpdGggYSBsaWJyYXJ5IGNhbGwuIEl0IGhhcyBhIGNvdXBsZSBvZiB1c2VmdWwgZnVuY3Rpb25zLCBoZXJlJ3Mgc29tZSBvZiB0aGVtLgoKMSBMZWFybiBtb3JlIGF0IHRpZHl2ZXJzZS5vcmcgKGh0dHA6Ly9mb3JjYXRzLnRpZHl2ZXJzZS5vcmcvKQoKKio1LiBUaGUgZmN0X3Jlb3JkZXIgZnVuY3Rpb24qKgoKV2l0aCB0aGUgZmN0X3Jlb3JkZXIgZnVuY3Rpb24sIHdlIGNhbiByZW9yZGVyIGZhY3RvcnMgaW4gYSBkYXRhLWRyaXZlbiB3YXksIGJhc2VkIG9uIHRoZSByYW5rcyBvZiBhbm90aGVyIHZhcmlhYmxlIGluIHRoZSBkYXRhIHNldC4gTGV0J3MgaGF2ZSBhIGxvb2sgYXQgb3VyIGN1cnJlbnQgZGF0YSBzZXQgYWdhaW4uIEFzIHlvdSBrbm93LCB0aGVyZSBhcmUgdHdvIHJvd3MgcGVyIGNvdW50cnksIG9uZSBmb3IgZWFjaCB5ZWFyLiBJZiB3ZSB3YW50IHRvIHJlb3JkZXIgdGhlIGNvdW50cmllcyBiYXNlZCBvbiB0aGUgdmFsdWUgb2Ygd29ya2luZyBob3VycyB3ZSBjYW4gZGVjaWRlIHdoZXRoZXIgdG8gdGFrZSB0aGUgdmFsdWUgZm9yIDE5OTYgb3IgdGhlIHZhbHVlIGZvciAyMDA2IGZvciByZW9yZGVyaW5nLiBXaXRoIHRoZSBmY3RfcmVvcmRlciBmdW5jdGlvbiwgdGhvdWdoLCB3ZSBjYW4gYWxzbyBzcGVjaWZ5IGEgY3VzdG9tIHN1bW1hcnkgZnVuY3Rpb24gYXMgdGhlIGxhc3QgYXJndW1lbnQuIFRoaXMgZnVuY3Rpb24gaXMgYXBwbGllZCB0byBhbGwgdmFsdWVzIG9mIHRoZSBzYW1lIGZhY3RvciBsZXZlbCwgdGhhdCBpcywgb2YgdGhlIHNhbWUgY291bnRyeS4gSWYgd2Ugc3BlY2lmeSB0aGUgbWVhbiBmdW5jdGlvbiBhcyB0aGUgdGhpcmQgYXJndW1lbnQgdG8gdGhlIGZjdF9yZW9yZGVyIGZ1bmN0aW9uLCBmb3IgaW5zdGFuY2UsIHRoZSBtZWFuIHdlZWtseSB3b3JraW5nIGhvdXJzIG9mIGJvdGggeWVhcnMgaXMgY29tcHV0ZWQgZm9yIGVhY2ggY291bnRyeSwgYW5kIHRoZW4gdGhlIGNvdW50cmllcyBhcmUgcmVvcmRlcmVkIGFjY29yZGluZyB0byB0aGlzIG1lYW4gdmFsdWUuIEFzIHlvdSBjYW4gc2VlLCB0aGUgbGV2ZWxzIGFyZSBub3cgZGlmZmVyZW50LCB0aGUgbGlzdCBzdGFydHMgd2l0aCB0aGUgTmV0aGVybGFuZHMsIHdoaWNoIGhhcyB0aGUgbG93ZXN0IG1lYW4gd2Vla2x5IHdvcmtpbmcgaG91cnMuCgoqKjYuIFRoZSBmY3RfcmVvcmRlciBmdW5jdGlvbioqCgpMZXQncyBoYXZlIGEgZGV0YWlsZWQgbG9vayBhdCB0aGlzIGFnYWluLiBJbiB0aGUgZmN0X3Jlb3JkZXIgZnVuY3Rpb24sIHdlIGZpcnN0IG5lZWQgdG8gc3BlY2lmeSB0aGUgZmFjdG9yIHZhcmlhYmxlIHRvIHJlb3JkZXIsIHRoZW4gYW5vdGhlciB2YXJpYWJsZSB3aG9zZSByYW5raW5nIGRpY3RhdGVzIHRoZSBvcmRlciBvZiBsZXZlbHMsIGFuZCB0aGVuIGEgc3VtbWFyeSBmdW5jdGlvbi4gVGhpcyBzdW1tYXJ5IGZ1bmN0aW9uIGlzIHRoZW4gYXBwbGllZCB0byBlYWNoIHZhbHVlIGZvciBldmVyeSBmYWN0b3IgbGV2ZWwuIFRoZXNlIHZhbHVlcyBhcmUgZ2l2ZW4gYXMgdmVjdG9yIGFyZ3VtZW50cyB0byB0aGUgc3VtbWFyeSBmdW5jdGlvbiwgc28gZm9yIEF1c3RyaWEsIHRoZSBtZWFuIG9mIDMxLjk5IGFuZCAzMS44MiBpcyBjYWxjdWxhdGVkLCBhbmQgc28gZm9ydGguCgoqKjcuIE51ZGdpbmcgbGFiZWxzIHdpdGggaGp1c3QgYW5kIHZqdXN0KioKCk9uZSBwcm9ibGVtIHJlbWFpbnM6IFRoZSB3b3JraW5nIGhvdXIgbGFiZWxzIGZvciBib3RoIHllYXJzIHN0aWxsIG92ZXJsYXAgd2l0aCB0aGUgYXJyb3dzLiBJbiBvcmRlciB0byBzb2x2ZSB0aGlzIHdlIGNhbiBtYWtlIHVzZSBvZiB0aGUgaGp1c3QgYW5kIHZqdXN0IGFlc3RoZXRpY3MgZm9yIHRoZSBnZW9tX3RleHQgZ2VvbWV0cnkuIElmIHlvdSB3YW50IHRvIG51ZGdlIGxhYmVscyBob3Jpem9udGFsbHksIHlvdSB1c2UgdGhlIGhqdXN0IGFlc3RoZXRpYywgd2hpY2ggdGFrZXMgdmFsdWVzIGZyb20gMCB0byAxLCBidXQgdmFsdWVzIG91dHNpZGUgdGhpcyByYW5nZSBhcmUgYWxzbyBwb3NzaWJsZS4gRm9yIG91ciBwbG90LCBJIGZvdW5kIDEuNCBhbmQgLTAuNCB0byBiZSBnb29kIHZhbHVlcy4gU2luY2UgaGp1c3QgaXMgYW4gYWVzdGhldGljLCBpdHMgdmFsdWUgY2FuIGJlIGRhdGEtZHJpdmVuLiBIZXJlLCB3ZSB1c2UgZGlmZmVyZW50IHZhbHVlcyBmb3IgdGhlIHllYXJzIDE5OTYgYW5kIDIwMDYsIHJlc3BlY3RpdmVseS4gVGhlIGlmZWxzZSBmdW5jdGlvbiBpcyBwZXJmZWN0IGZvciB0aGF0IC0gaWYgdGhlIHllYXIgaXMgMjAwNiwgdXNlIDEuNCBhcyB2YWx1ZSwgaWYgbm90LCB1c2UgLTAuNC4KCioqOC4gTGV0J3MgcHJhY3RpY2UhKioKClRoYXQgd2FzIGEgbG90LiBPbmNlIHlvdSB0cnkgaXQgb3V0IHlvdXJzZWxmIGl0IHdpbGwgYmUgZWFzaWVyIGZvciB5b3UgdG8gZ3Jhc3AhCgojIyMgKipSZW9yZGVyaW5nIGVsZW1lbnRzIGluIHRoZSBwbG90KioKCkFzIHNob3duIGluIHRoZSB2aWRlbywgdXNlIGBtdXRhdGUoKWAgYW5kIGBmY3RfcmVvcmRlcigpYCB0byBjaGFuZ2UgdGhlIGZhY3RvciBsZXZlbCBvcmRlcmluZyBvZiBhIHZhcmlhYmxlLgoKKipJbnN0cnVjdGlvbnMqKgoKLSBVc2UgYGZjdF9yZW9yZGVyKClgIGluIHRoZSBgZm9yY2F0c2AgcGFja2FnZSB0byByZW9yZGVyIHRoZSBgY291bnRyeWAgZmFjdG9yIHZhcmlhYmxlIGJ5IHdlZWtseSB3b3JraW5nIGhvdXJzIGluIHRoZSB5ZWFyIDIwMDYuCiAgLSBUbyBkbyB0aGF0LCBzcGVjaWZ5IHRoZSBjb3JyZWN0IHN1bW1hcnkgZnVuY3Rpb24gYXMgdGhlIHRoaXJkIGFyZ3VtZW50IG9mIGBmY3RfcmVvcmRlcmAuIEl0IHNob3VsZCBhcnJhbmdlIHRoZSBjb3VudHJ5IGZhY3RvciBsZXZlbHMgYnkgdGhlIGxhc3QgZWxlbWVudCBpbiB0aGUgYHdvcmtpbmdfaG91cnNgIHZhcmlhYmxlLgogIC0gSW4gb3JkZXIgdG8gZG8gdGhlIGFib3ZlLCB5b3UgZmlyc3QgbmVlZCB0byBgYXJyYW5nZSgpYCB0aGUgZGF0YSBzZXQgYnkgeWVhciDigJMgc28gMTk5NiBpcyBhbHdheXMgZmlyc3QgaW4gZWFjaCBjb3VudHJ5IGdyb3VwIGFuZCAyMDA2IGlzIGFsd2F5cyBsYXN0LgogIApgYGB7cn0KbGlicmFyeShmb3JjYXRzKQoKIyBSZW9yZGVyIGNvdW50cnkgZmFjdG9yIGxldmVscwppbG9fZGF0YSA8LSBpbG9fZGF0YSAlPiUKICAjIEFycmFuZ2UgZGF0YSBmcmFtZQogIGFycmFuZ2UoX19fKSAlPiUKICAjIFJlb3JkZXIgY291bnRyaWVzIGJ5IHdvcmtpbmcgaG91cnMgaW4gMjAwNgogIG11dGF0ZShjb3VudHJ5ID0gZmN0X3Jlb3JkZXIoX19fLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgX19fLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgX19fKSkKCiMgUGxvdCBhZ2FpbgpnZ3Bsb3QoaWxvX2RhdGEpICsKICBnZW9tX3BhdGgoYWVzKHggPSB3b3JraW5nX2hvdXJzLCB5ID0gY291bnRyeSksCiAgICAgICAgICAgIGFycm93ID0gYXJyb3cobGVuZ3RoID0gdW5pdCgxLjUsICJtbSIpLCB0eXBlID0gImNsb3NlZCIpKSArCiAgICBnZW9tX3RleHQoCiAgICAgICAgICBhZXMoeCA9IHdvcmtpbmdfaG91cnMsCiAgICAgICAgICAgICAgeSA9IGNvdW50cnksCiAgICAgICAgICAgICAgbGFiZWwgPSByb3VuZCh3b3JraW5nX2hvdXJzLCAxKSkKICAgICAgICAgICkKYGBgCiAgCiMjIyAqKkNvcnJlY3QgdWdseSBsYWJlbCBwb3NpdGlvbnMqKgoKVGhlIGxhYmVscyBzdGlsbCBraW5kIG9mIG92ZXJsYXAgd2l0aCB0aGUgbGluZXMgaW4gdGhlIGRvdCBwbG90LiBVc2UgYSBjb25kaXRpb25hbCBgaGp1c3RgIGFlc3RoZXRpYyBpbiBvcmRlciB0byBiZXR0ZXIgcGxhY2UgdGhlbSwgYW5kIGNoYW5nZSB0aGVpciBhcHBlYXJhbmNlLgoKKipJbnN0cnVjdGlvbnMqKgoKLSBHaXZlIHRoZSBgaGp1c3RgIGFlc3RoZXRpYyBpbiB0aGUgYGdlb21fdGV4dCgpYCBmdW5jdGlvbiBjYWxsIGEgdmFsdWUgb2YgYDEuNGAsIGlmIGl0IGNvbmNlcm5zIHRoZSBsYWJlbCBmb3IgdGhlIHllYXIgYCIyMDA2ImAsIGFuZCBgLTAuNGAgaWYgbm90LiBVc2UgdGhlIGBpZmVsc2UoKWAgZnVuY3Rpb24gZm9yIHRoaXMuCi0gQ2hhbmdlIGZvbnQgc2l6ZSwgZmFtaWx5IGFuZCBjb2xvciB0byBgM2AsIGAiQm9va21hbiJgIGFuZCBgImdyYXkyNSJgIHJlc3BlY3RpdmVseSwgYWxzbyBpbiB0aGUgYGdlb21fdGV4dCgpYCBjYWxsLCBidXQgb3V0c2lkZSBvZiB0aGUgYGFlcygpYCBmdW5jdGlvbiBzaW5jZSB0aGVzZSB2YWx1ZXMgYXJlIG5vdCBkYXRhLWRyaXZlbi4gIAoKYGBge3J9CiMgU2F2ZSBwbG90IGludG8gYW4gb2JqZWN0IGZvciByZXVzZQppbG9fZG90X3Bsb3QgPC0gZ2dwbG90KGlsb19kYXRhKSArCiAgZ2VvbV9wYXRoKGFlcyh4ID0gd29ya2luZ19ob3VycywgeSA9IGNvdW50cnkpLAogICAgICAgICAgICBhcnJvdyA9IGFycm93KGxlbmd0aCA9IHVuaXQoMS41LCAibW0iKSwgdHlwZSA9ICJjbG9zZWQiKSkgKwogICAgIyBTcGVjaWZ5IHRoZSBoanVzdCBhZXN0aGV0aWMgd2l0aCBhIGNvbmRpdGlvbmFsIHZhbHVlCiAgICBnZW9tX3RleHQoCiAgICAgICAgICBhZXMoeCA9IHdvcmtpbmdfaG91cnMsCiAgICAgICAgICAgICAgeSA9IGNvdW50cnksCiAgICAgICAgICAgICAgbGFiZWwgPSByb3VuZCh3b3JraW5nX2hvdXJzLCAxKSwKICAgICAgICAgICAgICBoanVzdCA9IGlmZWxzZShfX18pCiAgICAgICAgICAgICksCiAgICAgICAgICAjIENoYW5nZSB0aGUgYXBwZWFyYW5jZSBvZiB0aGUgdGV4dAogICAgICAgICAgX19fID0gX19fLAogICAgICAgICAgX19fID0gIl9fXyIsCiAgICAgICAgICBfX18gPSAiX19fIgogICAgICAgICAgKQoKaWxvX2RvdF9wbG90CmBgYAoKIyMgKipGaW5hbGl6aW5nIHRoZSBwbG90IGZvciBkaWZmZXJlbnQgYXVkaWVuY2VzIGFuZCBkZXZpY2VzKioKCioqMS4gRmluYWxpemluZyB0aGUgcGxvdCBmb3IgZGlmZmVyZW50IGF1ZGllbmNlcyBhbmQgZGV2aWNlcyoqCgpZb3UncmUgYWxtb3N0IGRvbmUhIEluIHRoaXMgbGFzdCBzZWN0aW9uIG9mIHRoZSBzZWNvbmQgY2hhcHRlciwgeW91J3JlIGdvaW5nIHRvIGZpbmFsaXplIHlvdXIgZG90IHBsb3QsIGFwcGx5IHlvdXIgY3VzdG9tIHRoZW1lIGFuZCBtYWtlIGl0IGZpdCBmb3IgZGlmZmVyZW50IGF1ZGllbmNlcyBhbmQgZGV2aWNlcy4KCioqMi4gPDw8TmV3IFNsaWRlPj4+KioKCkxldCdzIGhhdmUgYSBsb29rIGF0IHRoZSBjdXJyZW50IHN0YXRlIG9mIHlvdXIgcGxvdC4gVGhlIGxhYmVscyBhcmUgbm93IHNoaWZ0ZWQgc28gdGhleSBkb24ndCBvdmVybGFwIHdpdGggdGhlIGFycm93cyBhbnltb3JlLCBhbmQgdGhleSBhbHJlYWR5IGhhdmUgdGhlIHJpZ2h0IGZvbnQgZmFtaWx5LCBjb2xvciBhbmQgc2l6ZS4gVGhleSB3aWxsIGxvb2sgZ3JlYXQgdG9nZXRoZXIgd2l0aCB5b3VyIGN1c3RvbSB0aGVtZSB5b3UgYXJlIGdvaW5nIHRvIGFwcGx5IHNob3J0bHkuIEhvd2V2ZXIsIHlvdSd2ZSBpbnRyb2R1Y2VkIGFub3RoZXIgcHJvYmxlbS4gVGhlIGxhYmVscyBub3cgb3ZlcmxhcCB3aXRoIHRoZSBwbG90IHBhbmVsIGJvcmRlcnMgb24gdGhlIGxlZnQgYW5kIHJpZ2h0IHNpZGUgb2YgdGhlIHBhbmVsLiBJbiB0aGUgZm9sbG93aW5nIGV4ZXJjaXNlLCB5b3UgYXJlIGdvaW5nIHRvIGNoYW5nZSB0aGUgdmlld3BvcnQgaW4gb3JkZXIgdG8gc29sdmUgdGhpcyBwcm9ibGVtLgoKKiozLiBjb29yZF9jYXJ0ZXNpYW4gdnMuIHhsaW0gLyB5bGltKioKClRoZXJlIGFyZSBiYXNpY2FsbHkgdHdvIHdheXMgeW91IGNhbiBjaGFuZ2UgdGhlIHZpZXdwb3J0IG9mIHlvdXIgcGxvdCAtIHRoYXQgaXMsIHRvIHpvb20gaW4gb3Igb3V0LCBvciB0byBjaGFuZ2UgdGhlIHBvc2l0aW9uIG9mIHRoZSB2aWV3cG9ydC4gT24gb25lIGhhbmQgdGhlcmUncyB0aGUgcG9zc2liaWxpdHkgb2YgYWRkaW5nIHhsaW0gYW5kIHlsaW0gYXJndW1lbnRzIHRvIHRoZSBjb29yZF9jYXJ0ZXNpYW4gZnVuY3Rpb24sIHdoaWNoIGlzIHRoZSBkZWZhdWx0IGNvb3JkaW5hdGUgc3lzdGVtIGZvciBnZ3Bsb3Qgb2JqZWN0cy4gSGVyZSwgd2Ugc2V0IHRoZSB4IGRpbWVuc2lvbiB0byBnbyBmcm9tIDAgdG8gMTAwIGFuZCB0aGUgeSBkaW1lbnNpb24gdG8gZ28gZnJvbSAxMCB0byAyMCwgZXZlbiB0aG91Z2ggb3VyIGRhdGEgbWlnaHQgbm90IHNwYW4gdGhpcyByYW5nZS4gVGhlbiB0aGVyZSdzIGFsc28gdGhlIHBvc3NpYmlsaXR5IHRvIGRpcmVjdGx5IGNhbGwgdGhlIHhsaW0gYW5kIHlsaW0gZnVuY3Rpb25zIGFuZCBhZGQgdGhlbSB0byB0aGUgZ2dwbG90X29iamVjdC4gRG9lcyB0aGlzIGdpdmUgdGhlIHNhbWUgcmVzdWx0cz8KCioqNC4gY29vcmRfY2FydGVzaWFuIHZzLiB4bGltIC8geWxpbSoqCgpBbG1vc3QhIFRoZSBkaWZmZXJlbmNlIGlzIHN1YnRsZSBidXQgaW1wb3J0YW50LiBVc2luZyBjb29yZF9jYXJ0ZXNpYW4gcmV0YWlucyBhbGwgZGF0YSBwb2ludHMgaW4gdGhlIHBsb3QsIHdoaWxlIHVzaW5nIHhsaW0gb3IgeWxpbSBhY3R1YWxseSBjbGlwcyB0aGUgZGF0YSBhbmQgcmVtb3ZlcyBwb2ludHMgb3V0c2lkZSBvZiB0aGUgdmlld3BvcnQuIFRoaXMgbWF5IHJlc3VsdCBpbiB1Z2x5IGFydGlmYWN0cy4gU28sIEkgd291bGQgYXJndWUgaXQncyBnZW5lcmFsbHkgYmV0dGVyIHRvIHVzZSBjb29yZF9jYXJ0ZXNpYW4uCgoxIFRha2VuIGZyb20gUlN0dWRpbyBEYXRhIFZpc3VhbGl6YXRpb24gQ2hlYXQgU2hlZXQgKGh0dHBzOi8vZ2l0aHViLmNvbS9yc3R1ZGlvL2NoZWF0c2hlZXRzL3Jhdy9tYXN0ZXIvZGF0YS12aXN1YWxpemF0aW9uLTIuMS5wZGYpCgoqKjUuIDw8PE5ldyBTbGlkZT4+PioqCgpBZnRlciB0aGlzIGxhc3QgY29ycmVjdGlvbiwgeW91IHdpbGwgYXBwbHkgeW91ciBwcmV2aW91c2x5IGRlZmluZWQgdGhlbWUuIFRoYXQncyBob3cgdGhlIHBsb3Qgd2lsbCBsb29rIGFmdGVyIHRoaXMuIEl0IGNvbnRhaW5zIGV2ZXJ5dGhpbmcgYSBnb29kIHBsb3QgbmVlZHM6IEEgZGVzY3JpcHRpdmUgdGl0bGUsIGF4ZXMgdGl0bGVzIGFuZCBsYWJlbHMgYXMgd2VsbCBhcyB0aGUgZGF0YSBzb3VyY2UuIFBlb3BsZSB3aG8gbG9vayBhdCB0aGUgcGxvdCB3aWxsIGltbWVkaWF0ZWx5IHVuZGVyc3RhbmQgd2hhdCBpdCBpcyBhYm91dCwgYW5kIHRoZSBvcmRlcmluZyBvZiB0aGUgaXRlbXMgbWFrZXMgY29tcGFyaW5nIGNvdW50cmllcyBlYXN5LiBBbHNvLCB0aGUgcGxvdCBsb29rcyBub3QgbGlrZSBhIG5vcm1hbCBnZ3Bsb3QsIHJhdGhlciBpdCdzIGN1c3RvbWl6ZWQgYW5kIGVzcGVjaWFsbHkgYWVzdGhldGljIHRoYW5rcyB0byB5b3VyIG93biB0aGVtZS4KCioqNi4gRGVza3RvcCB2cy4gTW9iaWxlIGF1ZGllbmNlcyoqCgpIb3dldmVyLCB0aGVyZSdzIHN0aWxsIGEgcHJvYmxlbS4gV2hpbGUgeW91ciBwbG90IHdvcmtzIGdyZWF0IG9uIERlc2t0b3AgbW9uaXRvcnMsIGxvb2tpbmcgYXQgaXQgb24gYSBtb2JpbGUgZGV2aWNlIGlzIHBhaW5mdWwuIFNlZT8gVGhhdCdzIGhvdyBpdCB3b3VsZCBsb29rLiBUaGUgZm9udHMgYXJlIHdheSB0b28gc21hbGwgYW5kIG9ubHkgYSBzbWFsbCBmcmFjdGlvbiBvZiB0aGUgc2NyZWVuIGlzIGZpbGxlZCBvdXQuIFBlb3BsZSB3b3VsZCBoYXZlIHRvIHR1cm4gdGhlaXIgcGhvbmUgdG8gc2VlIHRoZSBwbG90IGluIHRoZSByaWdodCBhc3BlY3QgcmF0aW8uIElmIHRoZXkgZG9uJ3QgZG8gdGhhdCDigJMgYW5kIGRvbid0IGV2ZXIgZXhwZWN0IGl0IOKAkyB0aGV5IGhhdmUgdG8gdGVkaW91c2x5IHpvb20gaW4gYW5kIG91dCBhbmQgcGFuIGFyb3VuZCB0byBncmFzcCB0aGUgYmlnIHBpY3R1cmUgb2YgdGhlIHBsb3QuIEhlcmUncyBhbiBhbHRlcm5hdGl2ZSBwcm9wb3NhbC4gVGhlIHBsb3Qgbm93IGhhcyBhIDE2OjkgcG9ydHJhaXQgYXNwZWN0IHJhdGlvLCB3aGljaCBmaXRzIG1vc3Qgc21hcnRwaG9uZSBzY3JlZW5zIG5pY2VseS4gWW91IG1heSBub3Qgc2VlIGl0IG9uIHRoZSBzbGlkZXMsIGJ1dCB0aGUgZm9udCBzaXplIGlzIGJpZ2dlciBhbmQgdGh1cyBtb3JlIHJlYWRhYmxlLiBBbHNvOiBUaGUgYXhlcyBhcmUgY29tcGxldGVseSBtaXNzaW5nLCBhbmQgdGhlIGNvdW50cnkgbGFiZWxzIGhhdmUgYmVlbiBzaGlmdGVkIHRvIHRoZSBpbnNpZGUgb2YgdGhlIHBsb3QsIHJpZ2h0IHVuZGVyIHRoZSBhcnJvd3MuIFRoaXMgd2F5LCB3ZSBjYW4gc2F2ZSB0aGUgc3BhY2UgdGhlIGF4ZXMgdGFrZS4gQWN0dWFsbHksIGFmdGVyIHNoaWZ0aW5nIHRoZSBjb3VudHJ5IGxhYmVscyB0byB0aGUgZGF0YSBpdGVtcywgdGhleSB3ZXJlIHN1cGVyZmx1b3VzIGFueXdheSwgYmVjYXVzZSB0aGUgd2Vla2x5IHdvcmtpbmcgaG91cnMgZm9yIGJvdGggeWVhcnMgd2VyZSBhbHJlYWR5IHNob3duIGluIHRoZSBwbG90LCB0b28uIEluIHRoZSBmb2xsb3dpbmcgZXhlcmNpc2VzLCB5b3Ugd2lsbCBub3Qgb25seSBmaW5hbGl6ZSB0aGUgZGVza3RvcCB2ZXJzaW9uIG9mIHlvdXIgcGxvdCwgYnV0IGFsc28gY3VzdG9taXplIGl0IHNvIGl0IHdvcmtzIGJldHRlciBvbiBtb2JpbGUgZGV2aWNlcyBhbmQgdGh1cyBvbiBzb2NpYWwgbWVkaWEuCgoqKjcuIExldCdzIHByb2R1Y2UgdGhlc2UgcGxvdHMhKioKCkxldCdzIGRvIHRoaXMhCgojIyMgKipDaGFuZ2UgdGhlIHZpZXdwb3J0IHNvIGxhYmVscyBkb24ndCBvdmVybGFwIHdpdGggcGxvdCBib3JkZXIqKgoKVXNlIGEgZnVuY3Rpb24gaW50cm9kdWNlZCBpbiB0aGUgcHJldmlvdXMgdmlkZW8gdG8gY2hhbmdlIHRoZSB2aWV3cG9ydCBvZiB0aGUgcGxvdHRpbmcgYXJlYS4gQWxzbyBhcHBseSB5b3VyIGN1c3RvbSB0aGVtZS4KCioqSW5zdHJ1Y3Rpb25zKioKCi0gRml4IHRoZSBsYWJlbCBvdmVybGFwIHByb2JsZW0gYnkgcmVzZXR0aW5nIHRoZSB4LWxpbWl0cyBvZiB0aGUgY2FydGVzaWFuIGNvb3JkaW5hdGUgc3lzdGVtIHRvIGAyNWAgYW5kIGA0MWAuIE1ha2Ugc3VyZSB0byB1c2UgYSBmdW5jdGlvbiB0aGF0IGRvZXNuJ3QgY2xpcCB0aGUgZ2VvbWV0cmllcyBpbiB5b3VyIHBsb3QuCi0gUmVtZW1iZXIgeW91ciBjdXN0b20gYHRoZW1lX2lsbygpYCBmdW5jdGlvbj8gQXBwbHkgaXQgdG8gdGhlIHBsb3QuCgpgYGB7cn0KIyBSZXVzZSBpbG9fZG90X3Bsb3QKaWxvX2RvdF9wbG90IDwtIGlsb19kb3RfcGxvdCArCiAgIyBBZGQgbGFiZWxzIHRvIHRoZSBwbG90CiAgbGFicygKICAgIHggPSAiV29ya2luZyBob3VycyBwZXIgd2VlayIsCiAgICB5ID0gIkNvdW50cnkiLAogICAgdGl0bGUgPSAiUGVvcGxlIHdvcmsgbGVzcyBpbiAyMDA2IGNvbXBhcmVkIHRvIDE5OTYiLAogICAgc3VidGl0bGUgPSAiV29ya2luZyBob3VycyBpbiBFdXJvcGVhbiBjb3VudHJpZXMsIGRldmVsb3BtZW50IHNpbmNlIDE5OTYiLAogICAgY2FwdGlvbiA9ICJEYXRhIHNvdXJjZTogSUxPLCAyMDE3IgogICkgKwogICMgQXBwbHkgeW91ciB0aGVtZQogIF9fXyArCiAgIyBDaGFuZ2UgdGhlIHZpZXdwb3J0CiAgX19fKF9fXyA9IGMoX19fLCBfX18pKQogIAojIFZpZXcgdGhlIHBsb3QKaWxvX2RvdF9wbG90CmBgYAoK</div>
 
 
 
