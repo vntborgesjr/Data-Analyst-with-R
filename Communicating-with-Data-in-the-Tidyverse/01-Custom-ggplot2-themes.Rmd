@@ -1,12 +1,15 @@
 ---
 title: "01 - Custom ggplot2 themes"
 output: html_notebook
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE}
 library(tidyverse)
-ilo_working_hours <- load("~/Vitor/DataCamp/Data-Analyst-with-R/datasets/ilo_working_hours.RData")
-ilo_hourly_compensation <- load("~/Vitor/DataCamp/Data-Analyst-with-R/datasets/ilo_hourly_compensation.RData")
+ilo_working_hours <- load("~Users/VBorgesJr/Documents/GitHub/DataCamp/Data-Analyst-with-R/Communicating-with-Data-in-the-Tidyverse/datasets/ilo_working_hours.RData")
+ilo_hourly_compensation <- load("~Users/VBorgesJr/Documents/GitHub/DataCamp/Data-Analyst-with-R/Communicating-with-Data-in-the-Tidyversedatasets/ilo_hourly_compensation.RData")
+
 ```
 
 ## **Introduction to the data**
@@ -96,12 +99,12 @@ For displaying data in `ggplot2` graphics, it is often helpful to convert all th
 
 ```{r}
 # Turn year and country into a factor
-ilo_data_corrected <- ilo_data %>%
+ilo_data <- ilo_data %>%
   mutate(year = as.factor(as.numeric(year)),
         country = as.factor(country))
 
 # See the results
-ilo_data_corrected
+ilo_data
 ```
 
 ## **Filtering and plotting the data**
@@ -114,25 +117,74 @@ Good job preprocessing the data. This task often takes a lot of time, but here y
 
 Before visualizing this relationship, you will need to use dplyr's filter function to retain only European countries in the data set. That's a good set of countries where data for both 1996 and 2006 are available – the years you are going to compare in the second chapter of this course. You already know how to use the filter function, as shown in the code example here, where only Switzerland is retained.
 
+```{r}
+ilo_data %>% 
+  filter(country == 'Switzerland')
+```
+
 **3. The %in% operator**
 
 However, you might not know the so-called %in% operator, which often makes queries easier. While the equality operator in the previous example can filter for only one value at a time, the %in% operator can look up multiple values, like in this example. Here, we filter for countries in the vector on the right-hand side of the %in% operator, which is actually equivalent to using the OR operator with multiple equality operators. So in the following exercise, you are going to use this new %in% operator to only retain European countries in the data set.
+
+```{r}
+ilo_data %>% 
+  filter(country %in% c('Switzerland', 'Sweden'))
+
+# equivalent to 
+
+ilo_data %>% 
+  filter(country == 'Switzerland' | country == 'Sweden')
+```
 
 **4. The relationship between both indicators**
 
 Let's look at both labour market indicators. With ggplot2, we can quickly create a histogram of both the weekly working hours variable and the hourly compensation variable. This shows us the distribution of these values in 2006. However, in order to see the relationship between both variables, we need to use ggplot's point geometry.
 
+```{r}
+plot_data <- 
+  ilo_data %>% 
+  filter(year == 2006)
+
+ggplot(plot_data) +
+  geom_histogram(aes(x = working_hours))
+
+ggplot(plot_data) +
+  geom_histogram(aes(x = hourly_compensation))
+
+```
+
 **5. The relationship between both indicators**
 
 And this is what you're going to do in the following exercises: You're going to create the scatter plot shown here, using ggplot's geom_point function.
+
+```{r}
+ggplot(data = plot_data, aes(x = working_hours, y = hourly_compensation)) + 
+  geom_point()
+```
 
 **6. Adding labels to the plot**
 
 Still, without proper titles and labels, the plot is pretty worthless. In a follow-up exercise, you are going to use ggplot's labs function to provide more information to the readers of your plot.
 
+```{r}
+ggplot(data = plot_data, aes(x = working_hours, y = hourly_compensation)) + 
+  geom_point() + 
+  labs(title = "The more people work, the less compensation they seem to receive",
+       subtitle = 'Working hours and hourly compensation in European countries, 2006.',
+       caption = 'Data source: ILO, 2017') + 
+  xlab('Working hours per week') +
+       ylab('Hourly compensation') 
+```
+
 **7. Some dplyr function repetition**
 
 You're also going to quickly repeat some dplyr functions like group_by and summarize, as shown in this example here, where we computed the median weekly working hours over all years, for every country. The result of this is a table which you are going to style in the later parts of this course, where you will compile a nice report of your findings.
+
+```{r}
+ilo_data %>% 
+  group_by(country) %>% 
+  summarize(median_working_hours = median(working_hours))
+```
 
 **8. Let's practice!**
 
@@ -142,6 +194,10 @@ Now it's your turn.
 
 Use the `filter()` function of `dplyr` to remove non-European countries. A vector called `european_countries` has been created that contains all European countries which should remain in the data set. Here, the `%in%` operator introduced in the video might come in handy. Note that only a subset of European countries for which enough data exist is retained. For instance, Poland is missing.
 
+```{r, echo = FALSE}
+european_countries <- c("Finland", "France", "Italy", "Norway", "Spain", "Sweden", "Switzerland", "United Kingdom", "Belgium", "Ireland", "Luxembourg", "Portugal", "Netherlands", "Germany", "Hungary", "Austria", "Czech Rep." )
+```
+
 **Instructions**
 
 - Print `european_countries` to the console.
@@ -149,11 +205,11 @@ Use the `filter()` function of `dplyr` to remove non-European countries. A vecto
 
 ```{r}
 # Examine the European countries vector
-___
+european_countries
 
 # Only retain European countries
 ilo_data <- ilo_data %>%
-  ___(___)
+  filter(country %in% european_countries)
 ```
 
 ### **Some summary statistics**
@@ -168,14 +224,16 @@ Use `dplyr`s `group_by()` and `summarize()` to compute summary statistics for bo
 
 ```{r}
 # Examine the structure of ilo_data
-___(ilo_data)
+str(ilo_data)
 
 # Group and summarize the data
 ilo_data %>%
-  group_by(___) %>%
-  ___(mean_hourly_compensation = ___(___),
-            mean_working_hours = ___(___))
+  group_by(year) %>% 
+  summarize(mean_hourly_compensation = mean(hourly_compensation),
+            mean_working_hours = mean(working_hours))
 ```
+
+the average working hours have become less and less over the years, while the hourly compensation has increased. In the next exercises you'll visualize this.
 
 ### **A basic scatter plot**
 
@@ -185,6 +243,16 @@ In this exercise, you will create a very basic scatter plot with `ggplot2`. This
 
 - Filter the data for the year 2006. Save this filtered data set in a new variable called `plot_data` .
 - Use `plot_data` to create a scatter plot with `working_hours` on the x-axis and `hourly_compensation` on the y-axis.
+
+```{r}
+# Filter for 2006
+plot_data <- ilo_data %>%
+  filter(year == 2006)
+  
+# Create the scatter plot
+ggplot(plot_data) +
+  geom_point(aes(x = working_hours, y = hourly_compensation))
+```
 
 ### **Add labels to the plot**
 
@@ -204,12 +272,12 @@ As mentioned in the video, you're going to enhance the plot from the previous ex
 ggplot(plot_data) +
   geom_point(aes(x = working_hours, y = hourly_compensation)) +
   # Add labels
-  ___(
-    ___ = "Working hours per week",
-    ___ = "Hourly compensation",
-    ___ = "The more people work, the less compensation they seem to receive",
-    ___ = "Working hours and hourly compensation in European countries, 2006",
-    ___ = "Data source: ILO, 2017"
+  labs(
+    x = "Working hours per week",
+    y = "Hourly compensation",
+    title = "The more people work, the less compensation they seem to receive",
+    subtitle = "Working hours and hourly compensation in European countries, 2006",
+    caption = "Data source: ILO, 2017"
   )
 ```
 
@@ -259,7 +327,7 @@ As you've learnt in the videos, `ggplot2` comes with a set of predefined themes.
 
 ```{r}
 # Save your current plot into a variable: ilo_plot
-___ <- ggplot(plot_data) +
+ilo_plot <- ggplot(plot_data) +
   geom_point(aes(x = working_hours, y = hourly_compensation)) +
   labs(
     x = "Working hours per week",
@@ -271,6 +339,14 @@ ___ <- ggplot(plot_data) +
 
 # View it
 ilo_plot
+
+# Add a minimal theme
+ilo_plot +
+  theme_minimal()
+
+# Add a different theme
+ilo_plot +
+  theme_dark()
 ```
 
 ### **Change the appearance of titles**
@@ -289,10 +365,10 @@ ilo_plot <- ilo_plot +
   theme_minimal() +
   # Customize the "minimal" theme with another custom "theme" call
   theme(
-    text = element_text(___ = ____),
-    title = element_text(___ = ____),
-    plot.caption = element_text(___ = ___),
-    plot.subtitle = element_text(___ = ____)
+    text = element_text(family = "Bookman"),
+    title = element_text(color = "gray25"),
+    plot.caption = element_text(color = "gray30"),
+    plot.subtitle = element_text(size = 12)
   )
 
 # Render the plot object
@@ -314,8 +390,8 @@ Further customize the look of your plot with more arguments to the `theme` funct
 ilo_plot +
   # "theme" calls can be stacked upon each other, so this is already the third call of "theme"
   theme(
-    plot.background = ___(fill = ___),
-    plot.margin = unit(c(___, ___, ___, ___), units = "mm")
+    plot.background = element_rect(fill = "gray95"),
+    plot.margin = unit(c(5, 10, 5, 10), units = "mm")
   )
 ```
 
