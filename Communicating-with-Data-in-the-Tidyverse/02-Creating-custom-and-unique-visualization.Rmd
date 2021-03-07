@@ -1,5 +1,393 @@
 ---
 title: "02 - Creating a custom and unique visualization"
 output: html_notebook
+editor_options: 
+  chunk_output_type: inline
 ---
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(tidyverse)
+ilo_working_hours <- load("~Users/VBorgesJr/Documents/GitHub/DataCamp/Data-Analyst-with-R/Communicating-with-Data-in-the-Tidyverse/datasets/ilo_working_hours.RData")
+ilo_hourly_compensation <- load("~Users/VBorgesJr/Documents/GitHub/DataCamp/Data-Analyst-with-R/Communicating-with-Data-in-the-Tidyversedatasets/ilo_hourly_compensation.RData")
+
+```
+
+
+## **Visualizing aspects of data with facets**
+
+**1. Visualizing aspects of data with facets**
+
+Welcome to the second chapter of this course. In this chapter, you are going to explore a less conventional form of visualization, the dot plot. But before that, we are going to quickly revise faceting – a nice ggplot-way of looking at different aspects of a data set.
+
+**2. The facet_grid() function**
+
+You may already know about the facet_wrap function from previous courses. Here, you'll learn about the facet_grid function. Its advantage is that you can determine whether you want to order the facets horizontally or vertically. For that, the first argument given to the function is slightly different than for facet_wrap. It always takes a formula, which is denoted by the tilde in the middle of the formula. On the right-hand side you specify what variable will determine the columns of the plot, while the left-hand side variable will determine the rows of the plot. If you want to facet by one variable only, use the dot to indicate that there should be no faceting on this dimension.
+
+**3. The facet_grid() function**
+
+Actually, the facet_grid call with . ~ year gives identical results as facet_wrap with the same formula. Notice, however, that the dot needs to be removed from the formula in facet_wrap – we usually call this a one-sided formula, while facet_grid takes a two-sided formula.
+
+**4. A faceted scatter plot**
+
+In the last exercise, you generated this nice-looking scatter plot. It shows us the relationship in the year 2006. In the histograms for both years we saw that the weekly working hours have been decreasing overall. That means, in 1996 there were more countries with higher working hours than in 2006. But what happens to the relationship between working hours and hourly compensation? You're going to explore this in the exercises, where you will facet this scatter plot, so there are two different facets for both the years.
+
+**5. Styling faceted plots**
+
+Another reason we are revisiting faceting here is that there are some specific theme options for faceted plots, like strip.background and strip.text. They can be used to style the small titles that are given to each facet, here displaying the respective year.
+
+**6. Defining your own theme function**
+
+Another helpful thing you are going to try out in the exercises is defining your own theme function. Basically, a function definition works like this: You define a new variable, the name of the function. This name, in this case theme_green, is followed by the assignment operator and the function keyword, which is then followed by parentheses and an opening curly bracket. After that, the so-called function body defines what's happening once this function is executed. Here, you just call a normal ggplot2 theme function with your own custom theme options. You then close the function body with a curly bracket. The cool thing about a custom theme function is that you can then apply it to any plot object you like. If we apply our new theme_green-function to the histogram, it quickly changes its appearance. Well.. this plot certainly doesn't win a beauty contest, but you get the idea. You're going to try this out in the exercises.
+
+**7. Let's practice!**
+
+Let's do it!
+
+### **Prepare the data set for the faceted plot**
+
+You're now going to prepare your data set for producing the faceted scatter plot in the next exercise, as mentioned in the video.
+For this, the data set needs to contain only the years 1996 and 2006, because your plot will only have two facets. `ilo_data` has been pre-loaded for you.
+
+Instructions
+100 XP
+Use `filter()` to only retain the years 1996 and 2006 in the data set.
+Use the OR operator in your `filter()` function call.
+
+```{r}
+# Filter ilo_data to retain the years 1996 and 2006
+ilo_data <- ilo_data %>%
+  ___
+```
+
+### **Add facets to the plot**
+
+Here, you'll leverage `facet_grid()` to add horizontal facets for 1996 and 2006 each, as detailed in the video.
+
+When using `facet_grid()`, it is good practice to specify the facet formula with a named argument: `facets = ...`. This helps to avoid confusion since the `facet_grid()` function takes many other arguments.
+
+**Instructions**
+
+- Use `facet_grid()` with the right formula to generate two separate scatter plots that are arranged horizontally.
+- The left plot should show the data for the year 1996 while the year 2006 should be shown on the right side.
+
+```{r}
+# Again, you save the plot object into a variable so you can save typing later on
+ilo_plot <- ggplot(ilo_data, aes(x = working_hours, y = hourly_compensation)) +
+  geom_point() +
+   labs(
+    x = "Working hours per week",
+    y = "Hourly compensation",
+    title = "The more people work, the less compensation they seem to receive",
+    subtitle = "Working hours and hourly compensation in European countries, 2006",
+    caption = "Data source: ILO, 2017"
+  ) +
+  # Add facets here
+  ___(___)
+ 
+ilo_plot
+```
+
+### **Define your own theme function**
+
+In the video you saw how a lot of typing can be saved by replacing code chunks with function calls. You saw how a function is usually defined, now you will apply this knowledge in order to make your previous two `theme()` calls reusable.
+
+**Instructions**
+
+- Using your new knowledge about function definitions, create a function named `theme_ilo()` that encapsulates your theme settings.
+- The function body should contain both `theme()` calls that you would normally apply directly to a plot object: `theme_minimal() +` your customized `theme()` function.
+- Copy what you did before into this `theme_ilo()` function, using the `theme()` settings provided in the sample code.
+
+```{r}
+# For a starter, let's look at what you did before: adding various theme calls to your plot object
+ilo_plot +
+  theme_minimal() +
+  theme(
+    text = element_text(family = "Bookman", color = "gray25"),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(color = "gray30"),
+    plot.background = element_rect(fill = "gray95"),
+    plot.margin = unit(c(5, 10, 5, 10), units = "mm")
+  )
+      
+# Define your own theme function below
+theme_ilo <- function() {
+    ___() +
+    ___(
+        ___
+    )
+}
+```
+
+### **Apply the new theme function to the plot**
+
+Once you have created your own `theme_ilo()` function, it is time to apply it to a plot object. In the video you saw that `theme()` calls can be chained. You're going to make use of this and add another `theme()` call to adjust some peculiarities of the faceted plot.
+
+**Instructions**
+
+- From now on, you can just add `theme_ilo()` to any plot object you wish. Try it out! Overwrite the `ilo_plot` variable so `theme_ilo()` is applied permanently.
+- Combine your custom theme function with even further `theme()` calls to flexibly adjust settings for advanced plots.
+  - In order to do that, add another `theme()` call after the `theme_ilo()` call.
+  - Change the background fill of the facet labels to `"gray60"` and their color to `"gray95"`, using the `strip.background` argument.
+  - Change the color of the facet labels to `"white"`.
+  
+```{r}
+# Apply your theme function (dont't forget to call it with parentheses!)
+ilo_plot <- ilo_plot +
+  ___
+
+# Examine ilo_plot
+ilo_plot
+
+ilo_plot +
+  # Add another theme call
+  ___(
+    # Change the background fill and color
+    strip.background = element_rect(___, ___),
+    # Change the color of the text
+    strip.text = element_text(___)
+  )
+```
+  
+## **A custom plot to emphasize change** 
+
+**1. A custom plot to emphasize change**
+
+Great job! From the plot you just produced we see that there was a negative correlation between working hours and hourly compensation also in 1996.
+
+**2. <<<New Slide>>>**
+
+However, some countries seem to have shifted their position. In 2006, there are more countries with higher hourly compensation, and also more with less weekly working hours. From this scatter plot, we can't really tell which countries have made the biggest shift.
+
+**3. The dot plot**
+
+A good visualization form for showing change over time in one variable is the so-called dot plot. It is often used in data journalism for comparing the change of different entities like countries. Here's an example from the New York Times, which shows what share of the overall national income the richest 1 percent have got. For example, around 1980, the richest 1 percent in the US had 11 percent of the national income – nowadays they've got 20 percent. The dot plot not only shows which country made the biggest step into any direction, it also shows us the values for both years that are compared. Thus, it is well suited to showing change over time while also presenting some sort of rank between items.
+
+1 New York Times (https://www.nytimes.com/2017/11/17/upshot/income-inequality-united-states.html){{0}}
+
+**4. Dot plots with ggplot2**
+
+Dot plots can be easily created in ggplot2. Now, while there is a specific geometry called geom_dotplot, it's actually not what we are looking for. geom_dotplot basically produces a histogram with dots, as you can see in the code example here. The y axis now shows the share of countries with specific working hours, while the dots represent the actual countries in each category. The terminology in data vis is not sacred, so different things can have same names. For the dot plot you are going to produce in the next exercises, you will use ggplot2's geom_path function.
+
+**5. The geom_path() function**
+
+geom_path is useful for creating plots based on fundamental geometric elements, such as lines. If you look at the help for geom_path, it tells you that it connects the observations in a data set in the order in which they appear. Let's have a look at your current data set. In the first exercise of this chapter, you filtered it to only contain the years 1996 and 2006. If you order that data frame by country, you see that there are two rows for each country, representing both years. 1996 always comes before 2006, so geom_path will draw a path from 1996 to 2006, as these years appear in the data set.
+
+**6. Dot plots with `ggplot2`: the `geom_path()` function**
+
+geom_path requires the x- and y-aesthetic to be set. Both can be numeric variables, so geom_path will draw a path in the two-dimensional plane. However, one of both can also be a factor variable. If you specify a numeric variable for the x-aesthetic, and a factor for the y-aesthetic, geom_path will draw a single path for each value in the y-aesthetic, that is, for each value of the factor variable. Also, you can add an arrow to each path, using the arrow argument outside the aesthetics function. The arrow argument in turn takes an arrow function call, where you can specify the type of the arrow head and other settings. The arrow will be placed at the last section of your path and thus point into the same direction the path was drawn.
+
+**7. Let's try out geom_path!**
+
+This may sound a bit theoretical, so let's look at a concrete example and build your first iteration of the dot plot.
+
+### **A basic dot plot**
+
+As shown in the video, use only `geom_path()` to create the basic structure of the dot plot.
+
+**Instructions**
+
+- Create a new ggplot object which takes `ilo_data` as data set.
+- Add a `geom_path()` geometry where the weekly working hours are mapped to the x-axis and countries to the y-axis.
+
+```{r}
+# Create the dot plot
+___
+```
+
+### **Add arrows to the lines in the plot**
+
+Instead of labeling years, use the `arrow` argument of the `geom_path()` call to show the direction of change. The arrows will point from 1996 to 2006, because that's how the data set is ordered. The `arrow()` function takes two arguments: The first is `length`, which can be specified with a `unit()` call, which you might remember from previous exercises. The second is `type` which defines how the arrow head will look.
+
+**Instructions**
+
+- Use the `arrow` argument and an `arrow()` function call to add arrows to each line.
+- For the arrows, specify a `length` of `1.5` `"mm"` (with a unit() call) and a `type` of `"closed"`.
+
+```{r}
+ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+  # Add an arrow to each path
+  arrow = ___(___ = ___(___, "___"), ___ = "___"))
+```
+
+### **Add some labels to each country**
+
+A nice thing that can be added to plots are annotations or labels, so readers see the value of each data point displayed in the plot panel. This often makes axes obsolete, an advantage you're going to use in the last exercise of this chapter. These labels are usually added with `geom_text()` or `geom_label()`. The latter adds a background to each label, which is not needed here.
+
+**Instructions**
+
+- Label both points on the line with their respective working hours value. Use the `geom_text()` function for this, with the x- and y-aesthetic identical to the one in the `geom_path()` call.
+- Specify the `working_hours` variable for the `label` argument. Round `working_hours` to one digit after the decimal point.
+
+```{r}
+ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+            arrow = arrow(length = unit(1.5, "mm"), type = "closed")) +
+  # Add a geom_text() geometry
+  ___(
+          aes(x = ___,
+              y = ___,
+              label = round(___, 1))
+        )
+```
+
+## **Polishing the dot plot**
+
+**1. Polishing the dot plot**
+
+Great work. You've explored a new type of visualization in ggplot2. Actually, building the plot is quite easy, you only used the geom_path geometry for the lines with arrows, and the geom_text geometry to add labels.
+
+**2. <<<New Slide>>>**
+
+But still, by just looking at the plot you can probably tell that it's far from perfect. Obviously, the labels should be better placed – now, they overlap with the lines. Also, it's hard to compare countries with each other because they are ordered alphabetically at the moment. It's not straightforward to tell which country still has the highest weekly working hours. The solution lies in factor levels.
+
+**3. Factor levels**
+
+Factors are used to describe categorical variables with a fixed and known set of **levels**. The order of these levels usually determines the order of appearance in ggplot2 graphics. If you look at the country variable by typing ilo_data$country in the R console, you get its values but also its levels, listed in the actual order.
+
+**4. Reordering factors with the forcats package**
+
+Wrangling factors and factor levels sometimes can be a bit tedious. But there's a special package for making this easier, called forcats. It is part of the Tidyverse but needs to be loaded explicitly with a library call. It has a couple of useful functions, here's some of them.
+
+1 Learn more at tidyverse.org (http://forcats.tidyverse.org/)
+
+**5. The fct_reorder function**
+
+With the fct_reorder function, we can reorder factors in a data-driven way, based on the ranks of another variable in the data set. Let's have a look at our current data set again. As you know, there are two rows per country, one for each year. If we want to reorder the countries based on the value of working hours we can decide whether to take the value for 1996 or the value for 2006 for reordering. With the fct_reorder function, though, we can also specify a custom summary function as the last argument. This function is applied to all values of the same factor level, that is, of the same country. If we specify the mean function as the third argument to the fct_reorder function, for instance, the mean weekly working hours of both years is computed for each country, and then the countries are reordered according to this mean value. As you can see, the levels are now different, the list starts with the Netherlands, which has the lowest mean weekly working hours.
+
+**6. The fct_reorder function**
+
+Let's have a detailed look at this again. In the fct_reorder function, we first need to specify the factor variable to reorder, then another variable whose ranking dictates the order of levels, and then a summary function. This summary function is then applied to each value for every factor level. These values are given as vector arguments to the summary function, so for Austria, the mean of 31.99 and 31.82 is calculated, and so forth.
+
+**7. Nudging labels with hjust and vjust**
+
+One problem remains: The working hour labels for both years still overlap with the arrows. In order to solve this we can make use of the hjust and vjust aesthetics for the geom_text geometry. If you want to nudge labels horizontally, you use the hjust aesthetic, which takes values from 0 to 1, but values outside this range are also possible. For our plot, I found 1.4 and -0.4 to be good values. Since hjust is an aesthetic, its value can be data-driven. Here, we use different values for the years 1996 and 2006, respectively. The ifelse function is perfect for that - if the year is 2006, use 1.4 as value, if not, use -0.4.
+
+**8. Let's practice!**
+
+That was a lot. Once you try it out yourself it will be easier for you to grasp!
+
+### **Reordering elements in the plot**
+
+As shown in the video, use `mutate()` and `fct_reorder()` to change the factor level ordering of a variable.
+
+**Instructions**
+
+- Use `fct_reorder()` in the `forcats` package to reorder the `country` factor variable by weekly working hours in the year 2006.
+  - To do that, specify the correct summary function as the third argument of `fct_reorder`. It should arrange the country factor levels by the last element in the `working_hours` variable.
+  - In order to do the above, you first need to `arrange()` the data set by year – so 1996 is always first in each country group and 2006 is always last.
+  
+```{r}
+library(forcats)
+
+# Reorder country factor levels
+ilo_data <- ilo_data %>%
+  # Arrange data frame
+  arrange(___) %>%
+  # Reorder countries by working hours in 2006
+  mutate(country = fct_reorder(___,
+                               ___,
+                               ___))
+
+# Plot again
+ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+            arrow = arrow(length = unit(1.5, "mm"), type = "closed")) +
+    geom_text(
+          aes(x = working_hours,
+              y = country,
+              label = round(working_hours, 1))
+          )
+```
+  
+### **Correct ugly label positions**
+
+The labels still kind of overlap with the lines in the dot plot. Use a conditional `hjust` aesthetic in order to better place them, and change their appearance.
+
+**Instructions**
+
+- Give the `hjust` aesthetic in the `geom_text()` function call a value of `1.4`, if it concerns the label for the year `"2006"`, and `-0.4` if not. Use the `ifelse()` function for this.
+- Change font size, family and color to `3`, `"Bookman"` and `"gray25"` respectively, also in the `geom_text()` call, but outside of the `aes()` function since these values are not data-driven.  
+
+```{r}
+# Save plot into an object for reuse
+ilo_dot_plot <- ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+            arrow = arrow(length = unit(1.5, "mm"), type = "closed")) +
+    # Specify the hjust aesthetic with a conditional value
+    geom_text(
+          aes(x = working_hours,
+              y = country,
+              label = round(working_hours, 1),
+              hjust = ifelse(___)
+            ),
+          # Change the appearance of the text
+          ___ = ___,
+          ___ = "___",
+          ___ = "___"
+          )
+
+ilo_dot_plot
+```
+
+## **Finalizing the plot for different audiences and devices**
+
+**1. Finalizing the plot for different audiences and devices**
+
+You're almost done! In this last section of the second chapter, you're going to finalize your dot plot, apply your custom theme and make it fit for different audiences and devices.
+
+**2. <<<New Slide>>>**
+
+Let's have a look at the current state of your plot. The labels are now shifted so they don't overlap with the arrows anymore, and they already have the right font family, color and size. They will look great together with your custom theme you are going to apply shortly. However, you've introduced another problem. The labels now overlap with the plot panel borders on the left and right side of the panel. In the following exercise, you are going to change the viewport in order to solve this problem.
+
+**3. coord_cartesian vs. xlim / ylim**
+
+There are basically two ways you can change the viewport of your plot - that is, to zoom in or out, or to change the position of the viewport. On one hand there's the possibility of adding xlim and ylim arguments to the coord_cartesian function, which is the default coordinate system for ggplot objects. Here, we set the x dimension to go from 0 to 100 and the y dimension to go from 10 to 20, even though our data might not span this range. Then there's also the possibility to directly call the xlim and ylim functions and add them to the ggplot_object. Does this give the same results?
+
+**4. coord_cartesian vs. xlim / ylim**
+
+Almost! The difference is subtle but important. Using coord_cartesian retains all data points in the plot, while using xlim or ylim actually clips the data and removes points outside of the viewport. This may result in ugly artifacts. So, I would argue it's generally better to use coord_cartesian.
+
+1 Taken from RStudio Data Visualization Cheat Sheet (https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
+
+**5. <<<New Slide>>>**
+
+After this last correction, you will apply your previously defined theme. That's how the plot will look after this. It contains everything a good plot needs: A descriptive title, axes titles and labels as well as the data source. People who look at the plot will immediately understand what it is about, and the ordering of the items makes comparing countries easy. Also, the plot looks not like a normal ggplot, rather it's customized and especially aesthetic thanks to your own theme.
+
+**6. Desktop vs. Mobile audiences**
+
+However, there's still a problem. While your plot works great on Desktop monitors, looking at it on a mobile device is painful. See? That's how it would look. The fonts are way too small and only a small fraction of the screen is filled out. People would have to turn their phone to see the plot in the right aspect ratio. If they don't do that – and don't ever expect it – they have to tediously zoom in and out and pan around to grasp the big picture of the plot. Here's an alternative proposal. The plot now has a 16:9 portrait aspect ratio, which fits most smartphone screens nicely. You may not see it on the slides, but the font size is bigger and thus more readable. Also: The axes are completely missing, and the country labels have been shifted to the inside of the plot, right under the arrows. This way, we can save the space the axes take. Actually, after shifting the country labels to the data items, they were superfluous anyway, because the weekly working hours for both years were already shown in the plot, too. In the following exercises, you will not only finalize the desktop version of your plot, but also customize it so it works better on mobile devices and thus on social media.
+
+**7. Let's produce these plots!**
+
+Let's do this!
+
+### **Change the viewport so labels don't overlap with plot border**
+
+Use a function introduced in the previous video to change the viewport of the plotting area. Also apply your custom theme.
+
+**Instructions**
+
+- Fix the label overlap problem by resetting the x-limits of the cartesian coordinate system to `25` and `41`. Make sure to use a function that doesn't clip the geometries in your plot.
+- Remember your custom `theme_ilo()` function? Apply it to the plot.
+
+```{r}
+# Reuse ilo_dot_plot
+ilo_dot_plot <- ilo_dot_plot +
+  # Add labels to the plot
+  labs(
+    x = "Working hours per week",
+    y = "Country",
+    title = "People work less in 2006 compared to 1996",
+    subtitle = "Working hours in European countries, development since 1996",
+    caption = "Data source: ILO, 2017"
+  ) +
+  # Apply your theme
+  ___ +
+  # Change the viewport
+  ___(___ = c(___, ___))
+  
+# View the plot
+ilo_dot_plot
+```
 
