@@ -46,17 +46,17 @@ Let's do it!
 ### **Prepare the data set for the faceted plot**
 
 You're now going to prepare your data set for producing the faceted scatter plot in the next exercise, as mentioned in the video.
-For this, the data set needs to contain only the years 1996 and 2006, because your plot will only have two facets. `ilo_data` has been pre-loaded for you.
+For this, the data set needs to contain only the years §1996 and 2006, because your plot will only have two facets. `ilo_data` has been pre-loaded for you.
 
-Instructions
-100 XP
-Use `filter()` to only retain the years 1996 and 2006 in the data set.
-Use the OR operator in your `filter()` function call.
+**Instructions**
+
+- Use `filter()` to only retain the years 1996 and 2006 in the data set.
+- Use the OR operator in your `filter()` function call.
 
 ```{r}
 # Filter ilo_data to retain the years 1996 and 2006
 ilo_data <- ilo_data %>%
-  ___
+  filter(year == 1996 | year == 2006)
 ```
 
 ### **Add facets to the plot**
@@ -82,7 +82,7 @@ ilo_plot <- ggplot(ilo_data, aes(x = working_hours, y = hourly_compensation)) +
     caption = "Data source: ILO, 2017"
   ) +
   # Add facets here
-  ___(___)
+  facet_grid(facet = . ~ year)
  
 ilo_plot
 ```
@@ -111,10 +111,14 @@ ilo_plot +
       
 # Define your own theme function below
 theme_ilo <- function() {
-    ___() +
-    ___(
-        ___
-    )
+    theme_minimal() +
+  theme(
+    text = element_text(family = "Bookman", color = "gray25"),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(color = "gray30"),
+    plot.background = element_rect(fill = "gray95"),
+    plot.margin = unit(c(5, 10, 5, 10), units = "mm")
+  )
 }
 ```
 
@@ -133,18 +137,18 @@ Once you have created your own `theme_ilo()` function, it is time to apply it to
 ```{r}
 # Apply your theme function (dont't forget to call it with parentheses!)
 ilo_plot <- ilo_plot +
-  ___
+  theme_ilo()
 
 # Examine ilo_plot
 ilo_plot
 
 ilo_plot +
   # Add another theme call
-  ___(
+  theme(
     # Change the background fill and color
-    strip.background = element_rect(___, ___),
+    strip.background = element_rect(fill = 'gray60', color = 'gray95'),
     # Change the color of the text
-    strip.text = element_text(___)
+    strip.text = element_text(color = 'white')
   )
 ```
   
@@ -191,8 +195,12 @@ As shown in the video, use only `geom_path()` to create the basic structure of t
 
 ```{r}
 # Create the dot plot
-___
+ilo_data %>% 
+  ggplot() +
+  geom_path(aes(x = working_hours, y = country))
 ```
+
+Now that looks different from what you've seen – the lines show the change between 1996 and 2006 for each direction. Yet, readers don't know the position of these years in the plot, that's why you'll add arrows to the paths.
 
 ### **Add arrows to the lines in the plot**
 
@@ -207,8 +215,10 @@ Instead of labeling years, use the `arrow` argument of the `geom_path()` call to
 ggplot(ilo_data) +
   geom_path(aes(x = working_hours, y = country),
   # Add an arrow to each path
-  arrow = ___(___ = ___(___, "___"), ___ = "___"))
+  arrow = arrow(length = unit(1.5, "mm"), type = "closed"))
 ```
+
+Now it becomes implicitly clear that all the countries have seen a decrease in weekly working hours since 1996, because the arrows are always pointing to the left.
 
 ### **Add some labels to each country**
 
@@ -224,12 +234,13 @@ ggplot(ilo_data) +
   geom_path(aes(x = working_hours, y = country),
             arrow = arrow(length = unit(1.5, "mm"), type = "closed")) +
   # Add a geom_text() geometry
-  ___(
-          aes(x = ___,
-              y = ___,
-              label = round(___, 1))
+  geom_text(
+          aes(x = working_hours, y = country,
+              label = round(working_hours, 1))
         )
 ```
+
+Cool, now the x-axis is obsolete and can be removed in the remainder of this chapter. The labels are still kind of misplaced… 
 
 ## **Polishing the dot plot**
 
@@ -283,11 +294,11 @@ library(forcats)
 # Reorder country factor levels
 ilo_data <- ilo_data %>%
   # Arrange data frame
-  arrange(___) %>%
+  arrange(year) %>%
   # Reorder countries by working hours in 2006
-  mutate(country = fct_reorder(___,
-                               ___,
-                               ___))
+  mutate(country = fct_reorder(country,
+                               working_hours,
+                               last))
 
 # Plot again
 ggplot(ilo_data) +
@@ -299,7 +310,9 @@ ggplot(ilo_data) +
               label = round(working_hours, 1))
           )
 ```
-  
+
+now, countries appear in a defined order, which makes them way easier to compare to each other. But the labels still need fixing…
+
 ### **Correct ugly label positions**
 
 The labels still kind of overlap with the lines in the dot plot. Use a conditional `hjust` aesthetic in order to better place them, and change their appearance.
@@ -319,16 +332,18 @@ ilo_dot_plot <- ggplot(ilo_data) +
           aes(x = working_hours,
               y = country,
               label = round(working_hours, 1),
-              hjust = ifelse(___)
+              hjust = ifelse(year == 2006, 1.4, -0.4)
             ),
           # Change the appearance of the text
-          ___ = ___,
-          ___ = "___",
-          ___ = "___"
+          size = 3,
+          family = "Bookman",
+          color = "gray25"
           )
 
 ilo_dot_plot
 ```
+
+This problem has been solved. But now you've got another one: The labels on the very left and the very right overlap with the margins of the plot.
 
 ## **Finalizing the plot for different audiences and devices**
 
@@ -383,11 +398,58 @@ ilo_dot_plot <- ilo_dot_plot +
     caption = "Data source: ILO, 2017"
   ) +
   # Apply your theme
-  ___ +
+  theme_ilo() +
   # Change the viewport
-  ___(___ = c(___, ___))
+  coord_cartesian(xlim = c(25, 41))
   
 # View the plot
 ilo_dot_plot
 ```
 
+The plot looks totally different with your theme applied, and the labels fit nicely.
+
+### **Optimizing the plot for mobile devices**
+
+The x-axis title is already quite superfluous because you've added labels for both years. You'll now add country labels to the plot, so all of the axes can be removed.
+
+In this exercise, you're going to encounter something that is probably new to you: New data sets can be given to single geometries like `geom_text()`, so these geometries don't use the data set given to the initial `ggplot()` call. In this exercise, you are going to need this because you only want to add one label to each arrow. If you were to use the original data set `ilo_data`, two labels would be added because there are two observations for each country in the data set, one for 1996 and one for 2006.
+
+**Instructions**
+
+- A new data set `median_working_hours` was created so there will only be one label per country. Have a look at the structure of it with `str()`.
+- Use `median_working_hours` as the data argument in a new `geom_text()` call, in order to add labels for each country.
+- Correctly specify the required aesthetics for `geom_text()`: `x` and `label` which should point to the right variable in the `median_working_hours` data set.
+- Remove all the axes and the background grid by specifying the `element_blank()` function for all the `axis.` and the `panel.grid` arguments in the custom `theme()` call.
+- After running the final code, resize the plot window on the right to simulate a mobile device screen in portrait mode (narrow and tall) – all labels will fit the plot viewport.
+
+```{r}
+# Compute temporary data set for optimal label placement
+median_working_hours <- ilo_data %>%
+  group_by(country) %>%
+  summarize(median_working_hours_per_country = median(working_hours)) %>%
+  ungroup()
+
+# Have a look at the structure of this data set
+str(median_working_hours)
+
+ilo_dot_plot +
+  # Add label for country
+  geom_text(data = median_working_hours,
+            aes(y = country,
+                x = median_working_hours_per_country,
+                label = country),
+            vjust = 2,
+            family = "Bookman",
+            color = "gray25") +
+  # Remove axes and grids
+  theme(
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    panel.grid = element_blank(),
+    # Also, let's reduce the font size of the subtitle
+    plot.subtitle = element_text(size = 9)
+  )
+```
+
+Now the plot is stripped of all superfluous elements. You'll now embed it into a so-called RMarkdown report! PS: Remember to resize the plot window in order to see what it would look like on a mobile screen.
