@@ -3,3 +3,967 @@ title: "03 - Introduction to RMarkdown"
 output: html_notebook
 ---
 
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(tidyverse)
+ilo_working_hours <- load("~Users/VBorgesJr/Documents/GitHub/DataCamp/Data-Analyst-with-R/Communicating-with-Data-in-the-Tidyverse/datasets/ilo_working_hours.RData")
+ilo_hourly_compensation <- load("~Users/VBorgesJr/Documents/GitHub/DataCamp/Data-Analyst-with-R/Communicating-with-Data-in-the-Tidyversedatasets/ilo_hourly_compensation.RData")
+
+```
+
+## **What is RMarkdown**
+
+**1. What is RMarkdown?**
+
+Welcome to the third chapter and the second part of this course. In the first part you brought ggplot2 to the maximum to produce nice and custom plots. Now you are going to create a reproducible report and customize that as well.
+
+**2. What you have done so far**
+
+Let's have a quick look back at the first two chapters. The end result was this nice looking and custom plot. To get there, you first loaded the necessary packages like dplyr and forcats, you then loaded in and preprocessed the data. For instance, you filtered it to only contain European countries. You then defined a custom theme which you applied to a rather unconventional plot, the dot plot. In the end, you polished the plot and exported it in the right dimensions so it can be easily perceived on mobile screens. That's quite something! In this chapter and the next one, you will get to know a whole new technique to produce nicely formatted reports. These reports can be generated from within RStudio using the RMarkdown language.
+
+**3. <<<New Slide>>>**
+
+So what is RMarkdown? In a nutshell, RMarkdown is a framework that helps you to convert your R code and formatted prose into a wide range of output formats: HTML pages, PDFs, Word documents and even interactive web applications, to name a few. Let's have a look at a concrete example.
+
+1 Taken from rmarkdown.rstudio.com (http://rmarkdown.rstudio.com/images/RMarkdownOutputFormats.png)
+
+**4. Screencast**
+
+Here's an RMarkdown document in RStudio. The document starts with a header where the title and the author as well as other settings are specified. Then follows a combination of prose and R code chunks. The prose can be formatted in many ways, for instance, with bold text. You can also embed and style weblinks. Upon clicking "Knit HTML" in RStudio, the document is converted into a HTML file that pops up on the right side of the window. This document contains the formatted prose, and also the output of the R code chunks, such as a table.
+
+**5. Behind the scenes**
+
+That's what's happening behind the scenes when you click the "knit" button in RStudio. First, your RMarkdown document is knitted with the package knitr, meaning that all the code chunks are executed and the output is written to an ordinary Markdown document. This document is then processed by the pandoc software, which can convert a Markdown document to many different output formats such as PDFs and HTML documents.
+
+1 R for Data Science (http://r4ds.had.co.nz/r-markdown.html)
+
+**6. Reproducibility**
+
+The greatest side-effect of using RMarkdown is reproducibility. If somebody is given your RMarkdown report, he or she cannot only glance at the results, but also reproduce them by running your code, and thus question it – this is an important principle in science and also data journalism. Additionally, you can recreate your report with the click of a button, for instance if there are new data available. But reproducibility doesn't come for free. First of all, the code in the RMarkdown file needs to be executable on other people's machines. Also, code without data is useless, so the data should be provided as input to the RMarkdown report. At least a link to the data should be included, which makes sense if the data set is too big to distribute with your report. By fulfilling these two principles, the report is what I call minimally reproducible. Ideally, for a fully reproducible report, the software environment that was used should also be known, that is, version numbers of used packages, operating system, R version, etc.
+
+**7. Let's practice!**
+
+So let's start experimenting with RMarkdown!
+
+### **Introduction to the RMarkdown exercise interface**
+
+Welcome to the RMarkdown exercise interface. It is a little bit different from the one you have seen so far: When you click "Knit HTML", the interface will knit your R Markdown document into an HTML file and display that in a new pane. You could also knit it to a PDF file, but you are going to stick to HTML in this course.
+
+For your convenience, we've included some basic R code that quickly produces a plot from the `graphics` R package, which is loaded by default, using a data set `mtcars`, which is also loaded by default.
+
+**Instructions**
+
+- Adjust the title to 
+`"Communicating with Data in the Tidyverse"`
+, the author to your name, and the date in the YAML header **at the very top** of the RMarkdown file.
+- Click the "Knit HTML" button in order to see the knitted HTML file, opening up in a new pane.
+
+---
+title: "Communicating with Data in the Tidyverse"
+author: "Vitor Borges"
+date: "09-03-2021"
+output: html_document
+---
+
+The following plot shows the relationship between the number of cylinders and miles per gallon in the `mtcars` dataset.
+
+```{r}
+boxplot(mtcars$mpg ~ mtcars$cyl)
+```
+
+As one can see, the more cylinders, the less miles per gallons.
+
+
+## **Formating with Markdown** 
+
+**1. Formatting with Markdown**
+
+After this first look at the RMarkdown exercise interface, we are going to focus on the language that gives RMarkdown its name: Markdown.
+
+**2. Markdown**
+
+Markdown is what computer scientists usually call a Markup language (pun intended). You might know HTML, which is also a markup language. The acronym actually stands for hypertext markup language. However, HTML is tedious to write, that's why John Gruber invented an easier alternative in 2004. Markdown was born. The primary purpose of Markdown was to convert it into HTML so it could be used on websites.
+
+1 Daringfireball.net (https://web.archive.org/web/20040402182332/http://daringfireball.net/projects/markdown/)
+
+**3. Markdown**
+
+Let's look at a quick example. With Markdown, you can easily format chunks of text. You can add headers with the hash sign, and these headers can have different levels of importance. One hash sign usually stands for a first-level header, two hash signs for a second-level header, and so forth. You can also convert text into bold with double asterisks, emphasize text with single asterisks or even add links, and much more. Let's compare this to traditional HTML. First of all, HTML needs all formatted elements to be enclosed in so-called tags like h1 or strong, which makes it more tedious to write and probably harder to read. Also, it needs many more characters and is more error-prone than Markdown.
+
+**4. Pandoc Markdown**
+
+Put simply, RMarkdown is prose formatted with Markdown, and R code. The cool thing about RMarkdown is that it can not only be converted into HTML, but also into PDF and Word documents. RMarkdown actually uses a slightly different dialect of Markdown, so-called Pandoc Markdown. In the first video of this chapter you've seen that, behind the scenes, Pandoc is used to convert a Markdown file to a wide variety of different output formats. If you want to get to know all possible formatting possibilities with Pandoc Markdown – and trust me, there are a lot – have a look at this reference guide.
+
+**5. Let's put this into practice!**
+
+Okay, let's practice. In the next few exercises you will dive into Markdown prose and explore some of the formatting options you've just seen.
+
+### **Give your document a structure**
+
+From now on, you're going to create a step-by-step RMarkdown report with your plot from the last chapter. The first thing you are going to do is to add structure through section headers.
+
+PS: Note that it's good practice to *include* a space between the sign(s) that denote a header and the text! This keeps your Markdown syntax nice and readable.
+
+**Instructions**
+
+- Turn the section titles of these paragraphs, e.g. "Summary", into headers by using the appropriate RMarkdown syntax.
+- "Summary", "Preparations" and "Analysis" should be **second-level headers**, while "Data", "Preprocessing" and "Results" should be **third-level headers**.
+*Remember to adhere to best practices by including a space in your headers as described above!*
+
+---
+title: "The reduction in weekly working hours in Europe" 
+subtitle: "Looking at the development between 1996 and 2006"
+author: "Insert your name here"
+output: html_document
+---
+
+## Summary
+
+This is where you are going to quickly summarize what you did.
+
+## Preparations
+
+This is where you will load the necessary R packages.
+
+## Analysis
+
+### Data
+
+This is where you will load the data. 
+
+### Preprocessing
+
+This is where you will preprocess the data.
+
+### Results
+
+This is where you will plot the data.
+
+### **Change formatting of text snippets**
+
+As just shown in the video, there are more RMarkdown formatting options such as bold or italic text. Let's try them out on the first paragraph in your RMarkdown report.
+
+**Instructions**
+ 
+- Make `"International Labour Organization"` in the first sentence **bold**. Be sure that you *do not* also bold "The".
+- Turn "data sets" in the first sentence into a link to `http://www.ilo.org/global/statistics-and-databases/lang--en/index.htm`
+- Within the summary, emphasize `"the reduction in weekly working hours"` by turning it into *italic* text.
+
+---
+title: "The reduction in weekly working hours in Europe" 
+subtitle: "Looking at the development between 1996 and 2006"
+author: "Insert your name here"
+output: html_document
+---
+
+## Summary 
+
+The **International Labour Organization** (ILO) has many [data sets](http://www.ilo.org/global/statistics-and-databases/lang--en/index.htm) on working conditions. For example, one can look at how weekly working hours have been decreasing in many countries of the world, while monetary compensation has risen. In this report, *the reduction in weekly working hours* in European countries is analysed, and a comparison between 1996 and 2006 is made. All analysed countries have seen a decrease in weekly working hours since 1996 – some more than others.
+
+## Preparations 
+
+This is where you will load the necessary R packages.
+
+## Analysis
+
+### Data
+
+This is where you will load the data. 
+
+### Preprocessing
+
+This is where you will preprocess the data.
+
+### Results
+
+This is where you will plot the data.
+
+## **R code in RMarkdown documents**
+
+**1. R code in RMarkdown documents**
+
+In the last exercises you've looked at Markdown and how it can help with formatting prose. Now let's look at something that's probably even more important – R code.
+
+**2. <<<New Slide>>>**
+
+Before we get down to the nitty-gritty of R code chunks, let's look at a concrete example. This is an excerpt from the RMarkdown report you are going to create in the next few exersises. It starts with a second-level header named Analysis, followed by a third-level header, Data. Then comes some prose with a link, and the first actual R code chunk, where the data is loaded from a URL. This code chunk doesn't produce any output, it just loads the data into the workspace. The second code chunk though produces an output, namely a data frame with the average hourly compensation and weekly working hours per year. This output is automatically shown in the RMarkdown document. So embedding R code chunks in documents can both be helpful with showing how the code is written, but also with displaying the results it produces.
+
+**3. Adding R chunks**
+
+Adding R chunks to RMarkdown is pretty straightforward. Just add ```, followed by the letter r in curly brackets, followed by your R code, and then conclude the chunk with three backticks again. RMarkdown will evaluate the code snippet for you, in this case, it just returns the number 4. You can also add so-called inline R statements within your prose. For example, you write "2 plus 2 equals", and then a backtick and the r letter, and the R expression that will be evaluated, followed by another backtick. This results in this normal sentence. People looking at your final report will not even know there's R behind it.
+
+**4. The `knitr` package**
+
+But what's actually responsible for executing R code? Let's have a look back at the behind the scences diagram from the first video of this chapter. As you can see, in the first step, an RMarkdown document is converted to an ordinary Markdown document. In this course, all R code chunks are evaluated by the `knitr` package. Pandoc then converts this plain text file to other output formats. Let's have a closer look at knitr.
+
+1 R for Data Science (http://r4ds.had.co.nz/r-markdown.html)
+
+**5. R chunk options**
+
+Knitr allows us to specify many different options for R code chunks. For example, you can hide your code chunk from the knitted report, but still execute the R code. For this, you need to add include = FALSE to the curly brackets in your r code chunk. If you refer back to the variable in another code chunk, you see that the above code was actually executed.
+
+**6. More R chunk options**
+
+There are a couple of other options: These all take either FALSE or TRUE as values. If, for instance, include is set to FALSE, neither the code chunk nor its output is shown in the knitted Rmarkdown, as you have just seen. If only echo is set to FALSE, the chunk is shown, but its output is hidden. If message and warning are set to FALSE, output messages and warnings, respectively, are not shown. This comes in handy as some functions produce a lot of messages or neglectable warnings that are not really important for your report. Lastly, setting eval to FALSE still displays your code chunk in the knitted RMarkdown, but doesn't evaluate that chunk. If you want to know more about all the available chunk options, have a look at the help page of the knitr package.
+
+**7. Let's try this out!**
+
+Now let's try some examples.
+
+### **Specify packages in the first code chunk**
+
+We've copied the results of your analysis done in the second chapter to another RMarkdown report, shown here on the right. It uses your structure from the previous exercises, and has R code chunks added to the respective sections.
+
+However, something is missing: The information about the software you've used. Specifying the packages that are needed for a certain analysis is a necessity if you want to ensure **reproducibility**, so that others can reuse your work.
+
+*Remember to specify your R code chunk as follows!*
+
+```{r}
+# Some code
+
+```
+
+**Instructions**
+
+- First of all, get familiar with the structure of the new RMarkdown document you're going to work with from now on.
+- In the **"Preparations"** section, add a new R code chunk and delete the placeholder text. In this code chunk, load the Tidyverse libraries `dplyr`, `ggplot2` and `forcats`.
+
+---
+title: "The reduction in weekly working hours in Europe" 
+subtitle: "Looking at the development between 1996 and 2006"
+author: "Insert your name here"
+output: html_document
+---
+
+## Summary 
+
+The **International Labour Organization (ILO)** has many [data sets](http://www.ilo.org/global/statistics-and-databases/lang--en/index.htm) on working conditions. For example, one can look at how weekly working hours have been decreasing in many countries of the world, while monetary compensation has risen. In this report, *the reduction in weekly working hours* in European countries is analysed, and a comparison between 1996 and 2006 is made. All analysed countries have seen a decrease in weekly working hours since 1996 – some more than others.
+
+## Preparations 
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(forcats)
+```
+
+## Analysis
+
+### Data
+
+The herein used data can be found in the [statistics database of the ILO](http://www.ilo.org/ilostat/faces/wcnav_defaultSelection;ILOSTATCOOKIE=ZOm2Lqrr-OIuzxNGn2_08bNe9AmHQ1kUA6FydqyZJeIudFLb2Yz5!1845546174?_afrLoop=32158017365146&_afrWindowMode=0&_afrWindowId=null#!%40%40%3F_afrWindowId%3Dnull%26_afrLoop%3D32158017365146%26_afrWindowMode%3D0%26_adf.ctrl-state%3D4cwaylvi8_4). For the purpose of this course, it has been slightly preprocessed.
+
+```{r}
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_5807/datasets/ilo_data.RData"))
+```
+
+```{r}
+# Some summary statistics
+ilo_data %>%
+  group_by(year) %>%
+  summarize(mean_hourly_compensation = mean(hourly_compensation),
+            mean_working_hours = mean(working_hours))
+```
+
+As can be seen from the above table, the average weekly working hours of European countries have been descreasing since 1980.
+
+### Preprocessing
+
+The data is now filtered so it only contains the years 1996 and 2006 – a good time range for comparison. 
+
+```{r}
+ilo_data <- ilo_data %>%
+  filter(year == "1996" | year == "2006")
+  
+# Reorder country factor levels
+ilo_data <- ilo_data %>%
+  # Arrange data frame first, so last is always 2006
+  arrange(year) %>%
+  # Use the fct_reorder function inside mutate to reorder countries by working hours in 2006
+  mutate(country = fct_reorder(country,
+                               working_hours,
+                               last))
+```  
+
+### Results
+
+In the following, a plot that shows the reduction of weekly working hours from 1996 to 2006 in each country is produced.
+
+First, a custom theme is defined.
+
+```{r}
+# Better to define your own function than to always type the same stuff
+theme_ilo <- function(){
+  theme_minimal() +
+  theme(
+    text = element_text(family = "Bookman", color = "gray25"),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(color = "gray30"),
+    plot.background = element_rect(fill = "gray95"),
+    plot.margin = unit(c(5, 10, 5, 10), units = "mm")
+  )
+}
+```  
+
+Then, the plot is produced. 
+
+```{r}
+# Compute temporary data set for optimal label placement
+median_working_hours <- ilo_data %>%
+  group_by(country) %>%
+  summarize(median_working_hours_per_country = median(working_hours)) %>%
+  ungroup()
+
+# Have a look at the structure of this data set
+str(median_working_hours)
+
+# Plot
+ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+            arrow = arrow(length = unit(1.5, "mm"), type = "closed")) +
+  # Add labels for values (both 1996 and 2006)
+  geom_text(
+        aes(x = working_hours,
+            y = country,
+            label = round(working_hours, 1),
+            hjust = ifelse(year == "2006", 1.4, -0.4)
+          ),
+        # Change the appearance of the text
+        size = 3,
+        family = "Bookman",
+        color = "gray25"
+   ) +
+  # Add labels for country
+  geom_text(data = median_working_hours,
+            aes(y = country,
+                x = median_working_hours_per_country,
+                label = country),
+            vjust = 2,
+            family = "Bookman",
+            color = "gray25") +
+  # Add titles
+  labs(
+    title = "People work less in 2006 compared to 1996",
+    subtitle = "Working hours in European countries, development since 1996",
+    caption = "Data source: ILO, 2017"
+  ) +
+  # Apply your theme 
+  theme_ilo() +
+  # Remove axes and grids
+  theme(
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    panel.grid = element_blank(),
+    # Also, let's reduce the font size of the subtitle
+    plot.subtitle = element_text(size = 9)
+  ) +
+  # Reset coordinate system
+  coord_cartesian(xlim = c(25, 41))
+```
+
+### **R code chunk options**
+
+You've been introduced to some R code chunk options in the video. R code chunks can also be named. This makes sense in large documents, especially if there is an error inside a chunk. While knitting a document in RStudio, for example, the error can then be located in an easier fashion. Some chunks in your report have been named so you get the idea behind that concept. Chunk options are added after the name of the chunk and a comma, like so: `{r name, option = value}`
+
+Probably among the most used chunk options are the ones for controlling the display of the output. By default, all output is shown in RMarkdown documents, i.e. messages, warnings and errors. By specifying options like `echo = FALSE`, you can suppress the display of the R code itself, for example, while the code itself is still evaluated. Refer to the video for more display options.
+
+**_Remember to separate your chunk name and chunk options with a comma to prevent your session from crashing._**
+
+**Instructions**
+
+- On **line 14**, suppress messages in the first R code chunk with the `message` option, such that the output that is sometimes generated when loading packages is **not** shown.
+- On **line 64**, the chunk `defining_a_theme` enriches your report with a custom plot, however the code behind it is not so important for the readers of your report.
+  - Hide all the code, but let R evaluate it nonetheless (if you don't remember the chunk option, re-watch the video).
+  
+---
+title: "The reduction in weekly working hours in Europe" 
+subtitle: "Looking at the development between 1996 and 2006"
+author: "Insert your name here"
+output: html_document
+---
+
+## Summary 
+
+The **International Labour Organization (ILO)** has many [data sets](http://www.ilo.org/global/statistics-and-databases/lang--en/index.htm) on working conditions. For example, one can look at how weekly working hours have been decreasing in many countries of the world, while monetary compensation has risen. In this report, *the reduction in weekly working hours* in European countries is analysed, and a comparison between 1996 and 2006 is made. All analysed countries have seen a decrease in weekly working hours since 1996 – some more than others.
+
+## Preparations 
+
+```{r loading_packages, message = FALSE}
+library(dplyr)
+library(ggplot2)
+library(forcats)
+```
+
+## Analysis
+
+### Data
+
+The herein used data can be found in the [statistics database of the ILO](http://www.ilo.org/ilostat/faces/wcnav_defaultSelection;ILOSTATCOOKIE=ZOm2Lqrr-OIuzxNGn2_08bNe9AmHQ1kUA6FydqyZJeIudFLb2Yz5!1845546174?_afrLoop=32158017365146&_afrWindowMode=0&_afrWindowId=null#!%40%40%3F_afrWindowId%3Dnull%26_afrLoop%3D32158017365146%26_afrWindowMode%3D0%26_adf.ctrl-state%3D4cwaylvi8_4). For the purpose of this course, it has been slightly preprocessed.
+
+```{r loading_data}
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_5807/datasets/ilo_data.RData"))
+```
+
+```{r generating_summary_statistics}
+# Some summary statistics
+ilo_data %>%
+  group_by(year) %>%
+  summarize(mean_hourly_compensation = mean(hourly_compensation),
+            mean_working_hours = mean(working_hours))
+```
+
+As can be seen from the above table, the average weekly working hours of European countries have been descreasing since 1980.
+
+### Preprocessing
+
+The data is now filtered so it only contains the years 1996 and 2006 – a good time range for comparison. 
+
+```{r}
+ilo_data <- ilo_data %>%
+  filter(year == "1996" | year == "2006")
+  
+# Reorder country factor levels
+ilo_data <- ilo_data %>%
+  # Arrange data frame first, so last is always 2006
+  arrange(year) %>%
+  # Use the fct_reorder function inside mutate to reorder countries by working hours in 2006
+  mutate(country = fct_reorder(country,
+                               working_hours,
+                               last))
+```  
+
+### Results
+
+In the following, a plot that shows the reduction of weekly working hours from 1996 to 2006 in each country is produced.
+
+First, a custom theme is defined.
+
+```{r defining_a_theme, echo = FALSE}
+# Better to define your own function than to always type the same stuff
+theme_ilo <- function(){
+  theme_minimal() +
+  theme(
+    text = element_text(family = "Bookman", color = "gray25"),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(color = "gray30"),
+    plot.background = element_rect(fill = "gray95"),
+    plot.margin = unit(c(5, 10, 5, 10), units = "mm")
+  )
+}
+```  
+
+Then, the plot is produced. 
+
+```{r}
+# Compute temporary data set for optimal label placement
+median_working_hours <- ilo_data %>%
+  group_by(country) %>%
+  summarize(median_working_hours_per_country = median(working_hours)) %>%
+  ungroup()
+
+# Have a look at the structure of this data set
+str(median_working_hours)
+
+# Plot
+ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+            arrow = arrow(length = unit(1.5, "mm"), type = "closed")) +
+  # Add labels for values (both 1996 and 2006)
+  geom_text(
+        aes(x = working_hours,
+            y = country,
+            label = round(working_hours, 1),
+            hjust = ifelse(year == "2006", 1.4, -0.4)
+          ),
+        # Change the appearance of the text
+        size = 3,
+        family = "Bookman",
+        color = "gray25"
+   ) +
+  # Add labels for country
+  geom_text(data = median_working_hours,
+            aes(y = country,
+                x = median_working_hours_per_country,
+                label = country),
+            vjust = 2,
+            family = "Bookman",
+            color = "gray25") +
+  # Add titles
+  labs(
+    title = "People work less in 2006 compared to 1996",
+    subtitle = "Working hours in European countries, development since 1996",
+    caption = "Data source: ILO, 2017"
+  ) +
+  # Apply your theme 
+  theme_ilo() +
+  # Remove axes and grids
+  theme(
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    panel.grid = element_blank(),
+    # Also, let's reduce the font size of the subtitle
+    plot.subtitle = element_text(size = 9)
+  ) +
+  # Reset coordinate system
+  coord_cartesian(xlim = c(25, 41))
+```
+
+### **Inline code statements*
+
+As you've seen in the video, R code can not only be included in the form of chunks, but also in the form of inline statements:
+
+`2 + 2 equals `r 2 + 2` and here the text continues.`
+
+Most often, inline statements are used to compute a single value that fits in nicely with the surrounding text.
+
+Using an inline code statement, add a sentence that automatically tells the reader how many rows there are in the ILO data set.
+
+**Instructions**
+
+- In the "Data" section, on line 30, complete the sentence `"The loaded data contains..."` to specify the correct number of rows in the `ilo_data` dataset, using the `count()` function from the Tidyverse.
+
+---
+title: "The reduction in weekly working hours in Europe" 
+subtitle: "Looking at the development between 1996 and 2006"
+author: "Insert your name here"
+output: html_document
+---
+
+## Summary 
+
+The **International Labour Organization (ILO)** has many [data sets](http://www.ilo.org/global/statistics-and-databases/lang--en/index.htm) on working conditions. For example, one can look at how weekly working hours have been decreasing in many countries of the world, while monetary compensation has risen. In this report, *the reduction in weekly working hours* in European countries is analysed, and a comparison between 1996 and 2006 is made. All analysed countries have seen a decrease in weekly working hours since 1996 – some more than others.
+
+## Preparations 
+
+```{r loading_packages, message = FALSE}
+library(dplyr)
+library(ggplot2)
+library(forcats)
+```
+
+## Analysis
+
+### Data
+
+The herein used data can be found in the [statistics database of the ILO](http://www.ilo.org/ilostat/faces/wcnav_defaultSelection;ILOSTATCOOKIE=ZOm2Lqrr-OIuzxNGn2_08bNe9AmHQ1kUA6FydqyZJeIudFLb2Yz5!1845546174?_afrLoop=32158017365146&_afrWindowMode=0&_afrWindowId=null#!%40%40%3F_afrWindowId%3Dnull%26_afrLoop%3D32158017365146%26_afrWindowMode%3D0%26_adf.ctrl-state%3D4cwaylvi8_4). For the purpose of this course, it has been slightly preprocessed.
+
+```{r loading_data}
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_5807/datasets/ilo_data.RData"))
+```
+
+The loaded data contains `r count(ilo_data)` rows. 
+
+```{r generating_summary_statistics}
+# Some summary statistics
+ilo_data %>%
+  group_by(year) %>%
+  summarize(mean_hourly_compensation = mean(hourly_compensation),
+            mean_working_hours = mean(working_hours))
+
+```
+
+As can be seen from the above table, the average weekly working hours of European countries have been descreasing since 1980.
+
+### Preprocessing
+
+The data is now filtered so it only contains the years 1996 and 2006 – a good time range for comparison. 
+
+```{r}
+ilo_data <- ilo_data %>%
+  filter(year == "1996" | year == "2006")
+  
+# Reorder country factor levels
+ilo_data <- ilo_data %>%
+  # Arrange data frame first, so last is always 2006
+  arrange(year) %>%
+  # Use the fct_reorder function inside mutate to reorder countries by working hours in 2006
+  mutate(country = fct_reorder(country,
+                               working_hours,
+                               last))
+```  
+
+### Results
+
+In the following, a plot that shows the reduction of weekly working hours from 1996 to 2006 in each country is produced.
+
+First, a custom theme is defined.
+
+```{r defining_a_theme, echo = FALSE}
+# Better to define your own function than to always type the same stuff
+theme_ilo <- function(){
+  theme_minimal() +
+  theme(
+    text = element_text(family = "Bookman", color = "gray25"),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(color = "gray30"),
+    plot.background = element_rect(fill = "gray95"),
+    plot.margin = unit(c(5, 10, 5, 10), units = "mm")
+  )
+}
+```  
+
+Then, the plot is produced. 
+
+```{r}
+# Compute temporary data set for optimal label placement
+median_working_hours <- ilo_data %>%
+  group_by(country) %>%
+  summarize(median_working_hours_per_country = median(working_hours)) %>%
+  ungroup()
+
+# Have a look at the structure of this data set
+str(median_working_hours)
+
+# Plot
+ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+            arrow = arrow(length = unit(1.5, "mm"), type = "closed")) +
+  # Add labels for values (both 1996 and 2006)
+  geom_text(
+        aes(x = working_hours,
+            y = country,
+            label = round(working_hours, 1),
+            hjust = ifelse(year == "2006", 1.4, -0.4)
+          ),
+        # Change the appearance of the text
+        size = 3,
+        family = "Bookman",
+        color = "gray25"
+   ) +
+  # Add labels for country
+  geom_text(data = median_working_hours,
+            aes(y = country,
+                x = median_working_hours_per_country,
+                label = country),
+            vjust = 2,
+            family = "Bookman",
+            color = "gray25") +
+  # Add titles
+  labs(
+    title = "People work less in 2006 compared to 1996",
+    subtitle = "Working hours in European countries, development since 1996",
+    caption = "Data source: ILO, 2017"
+  ) +
+  # Apply your theme 
+  theme_ilo() +
+  # Remove axes and grids
+  theme(
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    panel.grid = element_blank(),
+    # Also, let's reduce the font size of the subtitle
+    plot.subtitle = element_text(size = 9)
+  ) +
+  # Reset coordinate system
+  coord_cartesian(xlim = c(25, 41))
+```
+## **
+
+### **Adjusting figure options, optimizing them for mobile devices.**
+
+You might have already noticed it: The dot plot you produced in the last chapter still needs some tweaks. There doesn't seem to be enough space between the arrows, and the last label (Netherlands) doesn't even show. Also, you want the image to fit the aspect ratio of a mobile device better, so you're going to change this with another set of chunk options.
+
+*Remember to separate your chunk options by commas to prevent your session from crashing.*
+
+**Instructions**
+
+- Adjust the options in the last R code chunk (on line 83), specifying an image height of 8 inches and width of 4.5 inches.
+- In addition, add a fig.align option (still in line 83) so that the image is always displayed in the center of the RMarkdown report.
+
+---
+title: "The reduction in weekly working hours in Europe" 
+subtitle: "Looking at the development between 1996 and 2006"
+author: "Insert your name here"
+output: html_document
+---
+
+## Summary 
+
+The **International Labour Organization (ILO)** has many [data sets](http://www.ilo.org/global/statistics-and-databases/lang--en/index.htm) on working conditions. For example, one can look at how weekly working hours have been decreasing in many countries of the world, while monetary compensation has risen. In this report, *the reduction in weekly working hours* in European countries is analysed, and a comparison between 1996 and 2006 is made. All analysed countries have seen a decrease in weekly working hours since 1996 – some more than others.
+
+## Preparations 
+
+```{r loading_packages, message = FALSE}
+library(dplyr)
+library(ggplot2)
+library(forcats)
+```
+
+## Analysis
+
+### Data
+
+The herein used data can be found in the [statistics database of the ILO](http://www.ilo.org/ilostat/faces/wcnav_defaultSelection;ILOSTATCOOKIE=ZOm2Lqrr-OIuzxNGn2_08bNe9AmHQ1kUA6FydqyZJeIudFLb2Yz5!1845546174?_afrLoop=32158017365146&_afrWindowMode=0&_afrWindowId=null#!%40%40%3F_afrWindowId%3Dnull%26_afrLoop%3D32158017365146%26_afrWindowMode%3D0%26_adf.ctrl-state%3D4cwaylvi8_4). For the purpose of this course, it has been slightly preprocessed.
+
+```{r loading_data}
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_5807/datasets/ilo_data.RData"))
+```
+
+The loaded data contains `r count(ilo_data)` rows. 
+
+```{r generating_summary_statistics}
+# Some summary statistics
+ilo_data %>%
+  group_by(year) %>%
+  summarize(mean_hourly_compensation = mean(hourly_compensation),
+            mean_working_hours = mean(working_hours))
+
+```
+
+As can be seen from the above table, the average weekly working hours of European countries have been descreasing since 1980.
+
+### Preprocessing
+
+The data is now filtered so it only contains the years 1996 and 2006 – a good time range for comparison. 
+
+```{r}
+ilo_data <- ilo_data %>%
+  filter(year == "1996" | year == "2006")
+  
+# Reorder country factor levels
+ilo_data <- ilo_data %>%
+  # Arrange data frame first, so last is always 2006
+  arrange(year) %>%
+  # Use the fct_reorder function inside mutate to reorder countries by working hours in 2006
+  mutate(country = fct_reorder(country,
+                               working_hours,
+                               last))
+```  
+
+### Results
+
+In the following, a plot that shows the reduction of weekly working hours from 1996 to 2006 in each country is produced.
+
+First, a custom theme is defined.
+
+```{r defining_a_theme, echo = FALSE}
+# Better to define your own function than to always type the same stuff
+theme_ilo <- function(){
+  theme_minimal() +
+  theme(
+    text = element_text(family = "Bookman", color = "gray25"),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(color = "gray30"),
+    plot.background = element_rect(fill = "gray95"),
+    plot.margin = unit(c(5, 10, 5, 10), units = "mm")
+  )
+}
+```  
+
+Then, the plot is produced. 
+
+```{r}
+# Compute temporary data set for optimal label placement
+median_working_hours <- ilo_data %>%
+  group_by(country) %>%
+  summarize(median_working_hours_per_country = median(working_hours)) %>%
+  ungroup()
+
+# Have a look at the structure of this data set
+str(median_working_hours)
+
+# Plot
+ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+            arrow = arrow(length = unit(1.5, "mm"), type = "closed")) +
+  # Add labels for values (both 1996 and 2006)
+  geom_text(
+        aes(x = working_hours,
+            y = country,
+            label = round(working_hours, 1),
+            hjust = ifelse(year == "2006", 1.4, -0.4)
+          ),
+        # Change the appearance of the text
+        size = 3,
+        family = "Bookman",
+        color = "gray25"
+   ) +
+  # Add labels for country
+  geom_text(data = median_working_hours,
+            aes(y = country,
+                x = median_working_hours_per_country,
+                label = country),
+            vjust = 2,
+            family = "Bookman",
+            color = "gray25") +
+  # Add titles
+  labs(
+    title = "People work less in 2006 compared to 1996",
+    subtitle = "Working hours in European countries, development since 1996",
+    caption = "Data source: ILO, 2017"
+  ) +
+  # Apply your theme 
+  theme_ilo() +
+  # Remove axes and grids
+  theme(
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    panel.grid = element_blank(),
+    # Also, let's reduce the font size of the subtitle
+    plot.subtitle = element_text(size = 9)
+  ) +
+  # Reset coordinate system
+  coord_cartesian(xlim = c(25, 41))
+```
+
+### **Add auxiliary images**
+
+Sometimes you also want to display external images in your RMarkdown report, i.e. plots that are not generated within your R code chunks. There's a solution for this.
+
+**Instructions**
+
+- Using Markdown syntax, insert the plot you produced in the second chapter in the appropriate section **at the end of the report** (on line 142). The link for the image is below (double click on the text to select it).
+
+  - `http://s3.amazonaws.com/assets.datacamp.com/production/course_5807/datasets/relationship.png`
+  - If you can't remember the syntax, best re-watch the video.
+- Use 
+`The relationship between weekly working hours and hourly compensation.`
+as the image caption.
+
+---
+title: "The reduction in weekly working hours in Europe" 
+subtitle: "Looking at the development between 1996 and 2006"
+author: "Insert your name here"
+output: html_document
+---
+
+## Summary 
+
+The **International Labour Organization (ILO)** has many [data sets](http://www.ilo.org/global/statistics-and-databases/lang--en/index.htm) on working conditions. For example, one can look at how weekly working hours have been decreasing in many countries of the world, while monetary compensation has risen. In this report, *the reduction in weekly working hours* in European countries is analysed, and a comparison between 1996 and 2006 is made. All analysed countries have seen a decrease in weekly working hours since 1996 – some more than others.
+
+## Preparations 
+
+```{r loading_packages, message = FALSE}
+library(dplyr)
+library(ggplot2)
+library(forcats)
+```
+
+## Analysis
+
+### Data
+
+The herein used data can be found in the [statistics database of the ILO](http://www.ilo.org/ilostat/faces/wcnav_defaultSelection;ILOSTATCOOKIE=ZOm2Lqrr-OIuzxNGn2_08bNe9AmHQ1kUA6FydqyZJeIudFLb2Yz5!1845546174?_afrLoop=32158017365146&_afrWindowMode=0&_afrWindowId=null#!%40%40%3F_afrWindowId%3Dnull%26_afrLoop%3D32158017365146%26_afrWindowMode%3D0%26_adf.ctrl-state%3D4cwaylvi8_4). For the purpose of this course, it has been slightly preprocessed.
+
+```{r loading_data}
+load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_5807/datasets/ilo_data.RData"))
+```
+
+The loaded data contains `r ilo_data %>% count()` rows. 
+
+```{r generating_summary_statistics}
+# Some summary statistics
+ilo_data %>%
+  group_by(year) %>%
+  summarize(mean_hourly_compensation = mean(hourly_compensation),
+            mean_working_hours = mean(working_hours))
+
+```
+
+As can be seen from the above table, the average weekly working hours of European countries have been descreasing since 1980.
+
+### Preprocessing
+
+The data is now filtered so it only contains the years 1996 and 2006 – a good time range for comparison. 
+
+```{r}
+ilo_data <- ilo_data %>%
+  filter(year == "1996" | year == "2006")
+  
+# Reorder country factor levels
+ilo_data <- ilo_data %>%
+  # Arrange data frame first, so last is always 2006
+  arrange(year) %>%
+  # Use the fct_reorder function inside mutate to reorder countries by working hours in 2006
+  mutate(country = fct_reorder(country,
+                               working_hours,
+                               last))
+```  
+
+### Results
+
+In the following, a plot that shows the reduction of weekly working hours from 1996 to 2006 in each country is produced.
+
+First, a custom theme is defined.
+
+```{r defining_a_theme, echo = FALSE}
+# Better to define your own function than to always type the same stuff
+theme_ilo <- function(){
+  theme_minimal() +
+  theme(
+    text = element_text(family = "Bookman", color = "gray25"),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(color = "gray30"),
+    plot.background = element_rect(fill = "gray95"),
+    plot.margin = unit(c(5, 10, 5, 10), units = "mm")
+  )
+}
+```  
+
+Then, the plot is produced. 
+
+```{r fig.height = 8, fig.width = 4.5, fig.align = "center"}
+# Compute temporary data set for optimal label placement
+median_working_hours <- ilo_data %>%
+  group_by(country) %>%
+  summarize(median_working_hours_per_country = median(working_hours)) %>%
+  ungroup()
+
+# Have a look at the structure of this data set
+str(median_working_hours)
+
+# Plot
+ggplot(ilo_data) +
+  geom_path(aes(x = working_hours, y = country),
+            arrow = arrow(length = unit(1.5, "mm"), type = "closed")) +
+  # Add labels for values (both 1996 and 2006)
+  geom_text(
+        aes(x = working_hours,
+            y = country,
+            label = round(working_hours, 1),
+            hjust = ifelse(year == "2006", 1.4, -0.4)
+          ),
+        # Change the appearance of the text
+        size = 3,
+        family = "Bookman",
+        color = "gray25"
+   ) +
+  # Add labels for country
+  geom_text(data = median_working_hours,
+            aes(y = country,
+                x = median_working_hours_per_country,
+                label = country),
+            vjust = 2,
+            family = "Bookman",
+            color = "gray25") +
+  # Add titles
+  labs(
+    title = "People work less in 2006 compared to 1996",
+    subtitle = "Working hours in European countries, development since 1996",
+    caption = "Data source: ILO, 2017"
+  ) +
+  # Apply your theme 
+  theme_ilo() +
+  # Remove axes and grids
+  theme(
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    panel.grid = element_blank(),
+    # Also, let's reduce the font size of the subtitle
+    plot.subtitle = element_text(size = 9)
+  ) +
+  # Reset coordinate system
+  coord_cartesian(xlim = c(25, 41))
+```
+
+####  An interesting correlation
+
+The results of another analysis are shown here, even though they cannot be reproduced with the data at hand.
+
+![The relationship between weekly working hours and hourly compensation.](http://s3.amazonaws.com/assets.datacamp.com/production/course_5807/datasets/relationship.png)
+
+As you can see, there's also an interesting relationship. The more people work, the less compensation they seem to receive. This is quite possibly related to other proxy variables like overall economic stability and performance of a country.
