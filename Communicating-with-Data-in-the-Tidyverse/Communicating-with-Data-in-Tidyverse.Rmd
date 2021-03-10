@@ -2,7 +2,15 @@
 title: "The reduction in weekly working hours in Europe" 
 subtitle: "Looking at the development between 1996 and 2006"
 author: "Insert your name here"
-output: html_document
+output: 
+  html_document:
+    theme: cosmo
+    highlight: monochrome
+    toc: true
+    toc_float: false
+    toc_depth: 4
+    code_folding: hide
+    css: styles.css
 ---
 
 ## Summary 
@@ -29,16 +37,17 @@ load(url("http://s3.amazonaws.com/assets.datacamp.com/production/course_5807/dat
 
 The loaded data contains `r ilo_data %>% count()` rows. 
 
-```{r generating_summary_statistics}
+```{r generating_summary_statistics, echo = TRUE}
 # Some summary statistics
 ilo_data %>%
   group_by(year) %>%
   summarize(mean_hourly_compensation = mean(hourly_compensation),
-            mean_working_hours = mean(working_hours))
-
+            mean_working_hours = mean(working_hours)) %>%
+  # pipe the above data frame into the knitr::kable function
+  knitr::kable()
 ```
 
-As can be seen from the above table, the average weekly working hours of European countries have been descreasing since 1980.
+As can be seen from the above table, the average weekly working hours of European countries have been decreasing since 1980.
 
 ### Preprocessing
 
@@ -135,12 +144,11 @@ ggplot(ilo_data) +
   coord_cartesian(xlim = c(25, 41))
 ```
 
-####  An interesting correlation
+#### An interesting correlation
 
 The results of another analysis are shown here, even though they cannot be reproduced with the data at hand.
 
 ![The relationship between weekly working hours and hourly compensation.](http://s3.amazonaws.com/assets.datacamp.com/production/course_5807/datasets/relationship.png)
 
-As you can see, there's also an interesting relationship. The more people work, the less compensation they seem to receive. This is quite possibly related to other proxy variables like overall economic stability and performance of a country.
-
+As you can see, there's also an interesting relationship. The more people work, the less compensation they seem to receive, which seems kind of unfair. This is quite possibly related to other proxy variables like overall economic stability and performance of a country.
 
