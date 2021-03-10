@@ -47,8 +47,8 @@ subtitle: "Looking at the development between 1996 and 2006"
 author: "Insert your name here"
 output: 
   html_document:
-    theme: blank
-    highlight: blank
+    theme: journal
+    highlight: monochrome
 ---
 
 ## Summary 
@@ -214,6 +214,9 @@ output:
   html_document:
     theme: cosmo
     highlight: monochrome
+    toc: true
+    toc_float: false
+    toc_depth: 4
 ---
 
 ## Summary 
@@ -378,6 +381,8 @@ output:
     toc: true
     toc_float: false
     toc_depth: 4
+    code_folding: hide
+    number_sections: true
 ---
 
 ## Summary 
@@ -569,20 +574,19 @@ output:
 
 <style>
 body, h1, h2, h3, h4 {
-    font-family: "____", ____;
+    font-family: "Bookman", serif;
 }
 
 body {
-    color: ____;
+    color: #333333;
 }
 a, a:hover {
-    color: ____;
+    color: 'red';
 }
 pre {
-    font-size: ____;
+    font-size: 10;
 }
 </style>
-
 ## Summary 
 
 The **International Labour Organization (ILO)** has many [data sets](http://www.ilo.org/global/statistics-and-databases/lang--en/index.htm) on working conditions. For example, one can look at how weekly working hours have been decreasing in many countries of the world, while monetary compensation has risen. In this report, *the reduction in weekly working hours* in European countries is analysed, and a comparison between 1996 and 2006 is made. All analysed countries have seen a decrease in weekly working hours since 1996 – some more than others.
@@ -748,6 +752,7 @@ output:
     toc_float: false
     toc_depth: 4
     code_folding: hide
+    css: styles.css
 ---
 
 ## Summary 
@@ -976,9 +981,9 @@ The loaded data contains `r ilo_data %>% count()` rows.
 ilo_data %>%
   group_by(year) %>%
   summarize(mean_hourly_compensation = mean(hourly_compensation),
-            mean_working_hours = mean(working_hours))
+            mean_working_hours = mean(working_hours)) %>%
   # pipe the above data frame into the knitr::kable function
-
+  knitr::kable()
 ```
 
 As can be seen from the above table, the average weekly working hours of European countries have been decreasing since 1980.
